@@ -1,0 +1,8 @@
+services:
+  pheidippides.api:
+    image: pheidippides.api
+    build:
+      context: .
+      dockerfile: Pheidippides.Api/Dockerfile
+    ports:
+      - "5282:8080"
