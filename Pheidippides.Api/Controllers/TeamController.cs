@@ -4,7 +4,7 @@ using Pheidippides.Api.Contracts.Team;
 
 namespace Pheidippides.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/team")]
 public class TeamController : Controller
 {
     [HttpGet("get")]

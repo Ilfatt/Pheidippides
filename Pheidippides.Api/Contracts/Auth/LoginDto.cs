@@ -1,4 +1,4 @@
-namespace Pheidippides.Api.Contracts.User;
+namespace Pheidippides.Api.Contracts.Auth;
 
 public class LoginDto
 {

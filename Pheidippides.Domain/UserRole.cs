@@ -2,6 +2,6 @@ namespace Pheidippides.Domain;
 
 public enum UserRole
 {
-    Worker,
-    Lead
+    Worker = 0,
+    Lead = 1
 }

@@ -4,7 +4,7 @@ using Pheidippides.Api.Contracts.Schedule;
 
 namespace Pheidippides.Api.Controllers;
 
-[Route("api/[controller]")]
+[Route("api/schedule")]
 public class ScheduleController : Controller
 {
     [HttpGet("get")]
