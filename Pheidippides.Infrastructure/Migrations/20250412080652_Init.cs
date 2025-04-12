@@ -13,6 +13,17 @@ namespace Pheidippides.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "FlashCallCodes",
+                columns: table => new
+                {
+                    PhoneNumber = table.Column<string>(type: "text", nullable: false),
+                    Code = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Incidents",
                 columns: table => new
                 {
@@ -51,7 +62,7 @@ namespace Pheidippides.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Email = table.Column<string>(type: "text", nullable: false),
+                    Email = table.Column<string>(type: "text", nullable: true),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     PasswordHash = table.Column<string>(type: "text", nullable: false),
                     FirstName = table.Column<string>(type: "text", nullable: false),
@@ -61,6 +72,7 @@ namespace Pheidippides.Infrastructure.Migrations
                     YandexScenarioName = table.Column<string>(type: "text", nullable: true),
                     YandexOAuthToken = table.Column<string>(type: "text", nullable: true),
                     IsDuty = table.Column<bool>(type: "boolean", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     TeamId = table.Column<long>(type: "bigint", nullable: false),
                     LeadTeamId = table.Column<long>(type: "bigint", nullable: false),
                     IncidentId = table.Column<long>(type: "bigint", nullable: true)
@@ -85,6 +97,12 @@ namespace Pheidippides.Infrastructure.Migrations
                 name: "IX_Incidents_TeamId",
                 table: "Incidents",
                 column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Teams_InviteToken",
+                table: "Teams",
+                column: "InviteToken",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_LeadId",
@@ -129,6 +147,9 @@ namespace Pheidippides.Infrastructure.Migrations
             migrationBuilder.DropForeignKey(
                 name: "FK_Users_Teams_TeamId",
                 table: "Users");
+
+            migrationBuilder.DropTable(
+                name: "FlashCallCodes");
 
             migrationBuilder.DropTable(
                 name: "Teams");

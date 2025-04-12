@@ -12,10 +12,15 @@ public class AppDbContext : DbContext
     public DbSet<User> Users { get; init; } = null!;
     public DbSet<Team> Teams { get; init; } = null!;
     public DbSet<Incident> Incidents { get; init; } = null!;
+    public DbSet<FlashCallCodes> FlashCallCodes { get; init; } = null!;
 
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
-    {
+    { 
+        modelBuilder.Entity<User>()
+            .HasIndex(x => x.PhoneNumber)
+            .IsUnique();
+        
         modelBuilder.Entity<User>()
             .HasOne<Team>(x => x.Team)
             .WithMany(t => t.Workers)
@@ -29,5 +34,9 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Team>()
             .HasIndex(x => x.InviteToken)
             .IsUnique();
+
+        modelBuilder.Entity<Incident>()
+            .HasMany(x => x.AcknowledgedUsers)
+            .WithMany(x => x.AcknowledgedUsersIncidents);
     }
 }

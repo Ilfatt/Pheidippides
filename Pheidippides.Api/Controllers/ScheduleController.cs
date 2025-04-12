@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Pheidippides.Api.Contracts.Common;
 using Pheidippides.Api.Contracts.Schedule;
+using Pheidippides.Domain;
 
 namespace Pheidippides.Api.Controllers;
 
@@ -14,21 +15,22 @@ public class ScheduleController : Controller
         return Ok(new ScheduleDto
         {
             LeadRotationRule = LeadRotationRule.LeadIsNotDuty,
-            ScheduleItems = new List<ScheduleItemDto>()
-            {
+            ScheduleItems =
+            [
                 new ScheduleItemDto
                 {
                     From = DateTimeOffset.UtcNow,
                     To = DateTimeOffset.UtcNow.AddDays(3),
                     UserId = 1
                 },
+
                 new ScheduleItemDto
                 {
                     From = DateTimeOffset.UtcNow.AddDays(3),
                     To = DateTimeOffset.UtcNow.AddDays(6),
                     UserId = 2
                 }
-            }
+            ]
         });
     }
 }

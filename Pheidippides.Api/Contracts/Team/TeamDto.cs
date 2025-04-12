@@ -1,4 +1,5 @@
 using Pheidippides.Api.Contracts.Common;
+using Pheidippides.Domain;
 
 namespace Pheidippides.Api.Contracts.Team;
 
@@ -9,5 +10,5 @@ public class TeamDto
     public required string InviteToken { get; init; }
     public required LeadRotationRule LeadRotationRule { get; init; }
     public required UserDto Lead { get; init; }
-    public required List<UserDto> Members { get; init; }
+    public required List<UserDto> Workers { get; init; }
 }

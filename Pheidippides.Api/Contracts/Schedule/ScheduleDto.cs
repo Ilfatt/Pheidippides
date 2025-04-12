@@ -1,4 +1,4 @@
-using Pheidippides.Api.Contracts.Common;
+using Pheidippides.Domain;
 
 namespace Pheidippides.Api.Contracts.Schedule;
 

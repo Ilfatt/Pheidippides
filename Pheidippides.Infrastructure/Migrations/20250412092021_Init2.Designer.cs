@@ -12,8 +12,8 @@ using Pheidippides.Infrastructure;
 namespace Pheidippides.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250406080343_Init")]
-    partial class Init
+    [Migration("20250412092021_Init2")]
+    partial class Init2
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,26 @@ namespace Pheidippides.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("Pheidippides.Domain.FlashCallCodes", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
+
+                    b.Property<int>("Code")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FlashCallCodes");
+                });
 
             modelBuilder.Entity("Pheidippides.Domain.Incident", b =>
                 {
@@ -72,7 +92,7 @@ namespace Pheidippides.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("LeadId")
+                    b.Property<long?>("LeadId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Name")
@@ -80,6 +100,9 @@ namespace Pheidippides.Infrastructure.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("InviteToken")
+                        .IsUnique();
 
                     b.HasIndex("LeadId")
                         .IsUnique();
@@ -95,8 +118,10 @@ namespace Pheidippides.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<DateTimeOffset>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FirstName")
@@ -131,7 +156,7 @@ namespace Pheidippides.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long>("TeamId")
+                    b.Property<long?>("TeamId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("YandexOAuthToken")
@@ -143,6 +168,9 @@ namespace Pheidippides.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IncidentId");
+
+                    b.HasIndex("PhoneNumber")
+                        .IsUnique();
 
                     b.HasIndex("TeamId");
 
@@ -164,9 +192,7 @@ namespace Pheidippides.Infrastructure.Migrations
                 {
                     b.HasOne("Pheidippides.Domain.User", "Lead")
                         .WithOne("LeadTeam")
-                        .HasForeignKey("Pheidippides.Domain.Team", "LeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("Pheidippides.Domain.Team", "LeadId");
 
                     b.Navigation("Lead");
                 });
@@ -179,9 +205,7 @@ namespace Pheidippides.Infrastructure.Migrations
 
                     b.HasOne("Pheidippides.Domain.Team", "Team")
                         .WithMany("Workers")
-                        .HasForeignKey("TeamId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("TeamId");
 
                     b.Navigation("Team");
                 });

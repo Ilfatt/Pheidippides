@@ -1,4 +1,4 @@
-namespace Pheidippides.Api.Contracts.Common;
+namespace Pheidippides.Domain;
 
 public enum LeadRotationRule
 {

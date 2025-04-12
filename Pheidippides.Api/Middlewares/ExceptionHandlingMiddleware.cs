@@ -80,15 +80,15 @@ public class ExceptionHandlingMiddleware
         LogLevel logLevel,
         Dictionary<string, object>? details = null)
     {
-        details ??= new Dictionary<string, object>();
-        details.Add("traceId", context.TraceIdentifier);
-        GetLogger(context).Log(logLevel, exception, errorText, details);
-
         if (exception is DomainException ex)
         {
             await WriteDomainError(context, ex);
             return;
         }
+     
+        details ??= new Dictionary<string, object>();
+        details.Add("traceId", context.TraceIdentifier);
+        GetLogger(context).Log(logLevel, exception, errorText, details);
 
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)responseCode;
@@ -114,15 +114,12 @@ public class ExceptionHandlingMiddleware
     }
 
 
-    private Task WriteDomainError(HttpContext context, DomainException exception)
+    private static Task WriteDomainError(HttpContext context, DomainException exception)
     {
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = exception.StatusCode;
 
         var problem = exception.ToProblemDetails();
-
-        if (!_hostingEnvironment.IsProduction())
-            problem.Extensions.Add("trace", exception.StackTrace);
         
         problem.Extensions.Add("traceId", context.TraceIdentifier);
 

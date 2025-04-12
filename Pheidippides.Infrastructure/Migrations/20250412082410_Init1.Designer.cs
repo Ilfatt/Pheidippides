@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using Pheidippides.Infrastructure;
@@ -11,9 +12,11 @@ using Pheidippides.Infrastructure;
 namespace Pheidippides.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250412082410_Init1")]
+    partial class Init1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,21 +24,6 @@ namespace Pheidippides.Infrastructure.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("IncidentUser", b =>
-                {
-                    b.Property<long>("AcknowledgedUsersId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long>("AcknowledgedUsersIncidentsId")
-                        .HasColumnType("bigint");
-
-                    b.HasKey("AcknowledgedUsersId", "AcknowledgedUsersIncidentsId");
-
-                    b.HasIndex("AcknowledgedUsersIncidentsId");
-
-                    b.ToTable("IncidentUser");
-                });
 
             modelBuilder.Entity("Pheidippides.Domain.FlashCallCodes", b =>
                 {
@@ -104,11 +92,8 @@ namespace Pheidippides.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long?>("LeadId")
+                    b.Property<long>("LeadId")
                         .HasColumnType("bigint");
-
-                    b.Property<int>("LeadRotationRule")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -143,6 +128,9 @@ namespace Pheidippides.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<long?>("IncidentId")
+                        .HasColumnType("bigint");
+
                     b.Property<bool>("IsDuty")
                         .HasColumnType("boolean");
 
@@ -168,7 +156,7 @@ namespace Pheidippides.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<long?>("TeamId")
+                    b.Property<long>("TeamId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("YandexOAuthToken")
@@ -179,27 +167,11 @@ namespace Pheidippides.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("PhoneNumber")
-                        .IsUnique();
+                    b.HasIndex("IncidentId");
 
                     b.HasIndex("TeamId");
 
                     b.ToTable("Users");
-                });
-
-            modelBuilder.Entity("IncidentUser", b =>
-                {
-                    b.HasOne("Pheidippides.Domain.User", null)
-                        .WithMany()
-                        .HasForeignKey("AcknowledgedUsersId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Pheidippides.Domain.Incident", null)
-                        .WithMany()
-                        .HasForeignKey("AcknowledgedUsersIncidentsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Pheidippides.Domain.Incident", b =>
@@ -217,18 +189,31 @@ namespace Pheidippides.Infrastructure.Migrations
                 {
                     b.HasOne("Pheidippides.Domain.User", "Lead")
                         .WithOne("LeadTeam")
-                        .HasForeignKey("Pheidippides.Domain.Team", "LeadId");
+                        .HasForeignKey("Pheidippides.Domain.Team", "LeadId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Lead");
                 });
 
             modelBuilder.Entity("Pheidippides.Domain.User", b =>
                 {
+                    b.HasOne("Pheidippides.Domain.Incident", null)
+                        .WithMany("AcknowledgedUsers")
+                        .HasForeignKey("IncidentId");
+
                     b.HasOne("Pheidippides.Domain.Team", "Team")
                         .WithMany("Workers")
-                        .HasForeignKey("TeamId");
+                        .HasForeignKey("TeamId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Team");
+                });
+
+            modelBuilder.Entity("Pheidippides.Domain.Incident", b =>
+                {
+                    b.Navigation("AcknowledgedUsers");
                 });
 
             modelBuilder.Entity("Pheidippides.Domain.Team", b =>

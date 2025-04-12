@@ -16,6 +16,7 @@ public class User
     public DateTimeOffset CreatedAt { get; private init; } = DateTimeOffset.UtcNow;
     public virtual Team? Team { get; init; }
     public virtual Team? LeadTeam { get; set; }
-    public long TeamId { get; init; }
+    public long? TeamId { get; init; }
     public long LeadTeamId { get; init; }
+    public virtual List<Incident> AcknowledgedUsersIncidents { get; init; } = [];
 }

@@ -9,7 +9,7 @@ public class ZvonokClient
     private const string FLASH_CALL_CAMPAIGN_ID = "761802590";
     private static readonly string Prefix = "db654378fe019622" + string.Empty + "f293034f4078be43";
 
-    public async Task FlashCall(string phoneNumber, CancellationToken cancellationToken)
+    public async Task<ushort> FlashCall(string phoneNumber, CancellationToken cancellationToken)
     {
         using var httpClient = BuildClient();
 
@@ -23,28 +23,10 @@ public class ZvonokClient
         var uri = QueryHelpers.AddQueryString("/manager/cabapi_external/api/v1/phones/flashcall/", query);
 
         using var response = await httpClient.PostAsync(uri, null, cancellationToken);
-    }
 
-    public async Task<ushort> GetFlashCallCode(string phoneNumber, CancellationToken cancellationToken)
-    {
-        using var httpClient = BuildClient();
-        
-        var query = new Dictionary<string, string?>
-        {
-            ["public_key"] = string.Empty + Prefix + string.Empty,
-            ["phone"] = phoneNumber,
-            ["campaign_id"] = FLASH_CALL_CAMPAIGN_ID,
-            ["expand"] = "0",
-            ["from_created_date"] = DateTimeOffset.UtcNow
-                .AddMinutes(-15)
-                .ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture)
-        };
+        var content = await response.Content.ReadFromJsonAsync<ApiResponse>(cancellationToken);
 
-        var uri = QueryHelpers.AddQueryString("/manager/cabapi_external/api/v1/phones/calls_by_phone/", query);
-
-        using var result = await httpClient.GetAsync(uri, cancellationToken);
-        var content = await result.Content.ReadAsStringAsync(cancellationToken);
-        return 0;
+        return Convert.ToUInt16(content!.Data.Pincode, CultureInfo.InvariantCulture);
     }
 
     private static HttpClient BuildClient()
@@ -55,4 +37,18 @@ public class ZvonokClient
 
         return httpClient;
     }
+}
+file class ApiResponse
+{
+    public string Status { get; init; }
+    public ResponseData Data { get; init; }
+}
+
+file class ResponseData
+{
+    public string Balance { get; init; }
+    public long CallId { get; init; }
+    public DateTime Created { get; init; }
+    public string Phone { get; init; }
+    public string Pincode { get; init; }
 }

@@ -7,6 +7,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Pheidippides.Domain;
 using Pheidippides.Domain.Exceptions;
+using Pheidippides.Domain.Utils;
+using Pheidippides.DomainServices.Extensions;
 using Pheidippides.ExternalServices;
 using Pheidippides.Infrastructure;
 
@@ -19,13 +21,35 @@ public class AuthService(
 {
     public async Task SendCode(string phoneNumber, CancellationToken cancellationToken)
     {
+        phoneNumber = PhoneNumberUnifier.Standardize(phoneNumber);
+        
         var phoneIsAlreadyInUse = await appDbContext.Users
             .AnyAsync(x => x.PhoneNumber == phoneNumber, cancellationToken);
 
         if (phoneIsAlreadyInUse)
             throw new ConflictException("Phone number is already in use");
         
-        await zvonokClient.FlashCall(phoneNumber, cancellationToken);
+        var code = await zvonokClient.FlashCall(phoneNumber, cancellationToken);
+
+        appDbContext.FlashCallCodes.Add(new FlashCallCodes { Code = code, PhoneNumber = phoneNumber });
+
+        await appDbContext.SaveChangesAsync(cancellationToken);
+    }
+
+    public async Task<string> Login(string phoneNumber, string password, CancellationToken cancellationToken)
+    {
+        phoneNumber = PhoneNumberUnifier.Standardize(phoneNumber);
+        var user = await appDbContext.Users.FirstOrDefaultAsync(
+            x => x.PhoneNumber == phoneNumber,
+            cancellationToken);
+
+        if (user == null)
+            throw new NotFoundException("User with this phone number not found");
+
+        if (user.PasswordHash == password.HashSha256())
+            return GenerateJwtToken(user.Id, user.Role);
+
+        throw new UnauthorizedException("Invalid password");
     }
 
     public string GenerateJwtToken(long userId, UserRole role)

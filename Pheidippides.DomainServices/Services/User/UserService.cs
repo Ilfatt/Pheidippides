@@ -2,21 +2,34 @@ using System.Security.Cryptography;
 using Microsoft.EntityFrameworkCore;
 using Pheidippides.Domain;
 using Pheidippides.Domain.Exceptions;
+using Pheidippides.Domain.Utils;
 using Pheidippides.DomainServices.Extensions;
 using Pheidippides.DomainServices.Services.Auth;
-using Pheidippides.ExternalServices;
 using Pheidippides.Infrastructure;
 
 namespace Pheidippides.DomainServices.Services.User;
 
-public class UserService(ZvonokClient zvonokClient, AppDbContext appDbContext, AuthService authService)
+public class UserService(AppDbContext appDbContext, AuthService authService)
 {
     public async Task<string> Register(RegisterCommand command, CancellationToken cancellationToken)
     {
-        var codeFromZvonok = await zvonokClient.GetFlashCallCode(command.PhoneNumber, cancellationToken);
+        if (command is { TeamInviteCode: not null, TeamName: not null })
+            throw new BadRequestException("TeamInviteCode or TeamName must be null");
+        
+        var codeIsValid = await appDbContext.FlashCallCodes.AnyAsync(x =>
+                x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber)
+                && x.Code == command.PhoneActivationCode,
+            cancellationToken);
 
-        if (codeFromZvonok != command.PhoneActivationCode)
+        if (!codeIsValid)
             throw new ForbiddenException("Invalid phone activation code");
+
+        var userExist = await appDbContext.Users.AnyAsync(
+            x => x.PhoneNumber == command.PhoneNumber,
+            cancellationToken);
+
+        if (userExist)
+            throw new ConflictException("User with this phone number already exists");
 
         Domain.User user;
 
@@ -24,10 +37,9 @@ public class UserService(ZvonokClient zvonokClient, AppDbContext appDbContext, A
         {
             user = CreateUser(command, UserRole.Lead);
             var team = CreateTeamAndAddLead(command, user);
-            
-            user.LeadTeam = team;
-            
-            await appDbContext.Users.AddAsync(user, cancellationToken);
+
+            appDbContext.Teams.Add(team);
+            appDbContext.Users.Add(user);
         }
         else if (command.TeamInviteCode is not null)
         {
@@ -39,13 +51,34 @@ public class UserService(ZvonokClient zvonokClient, AppDbContext appDbContext, A
                                cancellationToken)
                        ?? throw new ForbiddenException("Invalid team invite code");
 
-            await appDbContext.Users.AddAsync(user, cancellationToken);
             team.Workers.Add(user);
         }
         else throw new BadRequestException("The team invitation code or team name is not specified.");
 
         await appDbContext.SaveChangesAsync(cancellationToken);
-        return authService.GenerateJwtToken(user.Id, user.Role);
+
+        var id = await appDbContext.Users
+            .Where(x => x.PhoneNumber == command.PhoneNumber)
+            .Select(x => x.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+
+        return authService.GenerateJwtToken(id, user.Role);
+    }
+
+    public async Task ThrowIfUserNotExist(
+        long userId, 
+        bool isDomainError = false,
+        CancellationToken cancellationToken = default)
+    {
+        var userExist = await appDbContext.Users.AnyAsync(x => x.Id == userId, cancellationToken);
+
+        switch (userExist)
+        {
+            case false when isDomainError:
+                throw new NotFoundException("User with this id does not exist");
+            case false:
+                throw new ArgumentException("User with this id does not exist");
+        }
     }
 
     private static Team CreateTeamAndAddLead(RegisterCommand command, Domain.User user)
@@ -59,7 +92,7 @@ public class UserService(ZvonokClient zvonokClient, AppDbContext appDbContext, A
     private static Domain.User CreateUser(RegisterCommand command, UserRole userRole)
         => new()
         {
-            PhoneNumber = command.PhoneNumber,
+            PhoneNumber = PhoneNumberUnifier.Standardize(command.PhoneNumber),
             PasswordHash = command.Password.HashSha256(),
             FirstName = command.FirstName,
             SecondName = command.SecondName,

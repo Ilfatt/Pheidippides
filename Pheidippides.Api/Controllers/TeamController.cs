@@ -1,56 +1,54 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pheidippides.Api.Contracts.Common;
 using Pheidippides.Api.Contracts.Team;
+using Pheidippides.Api.Extensions;
+using Pheidippides.Domain;
+using Pheidippides.DomainServices.Services.Teams;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace Pheidippides.Api.Controllers;
 
 [Route("api/team")]
-public class TeamController : Controller
+public class TeamController(
+    TeamService teamService,
+    IHttpContextAccessor httpContextAccessor) : Controller
 {
     [HttpGet("get")]
+    [Authorize]
+    [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(TeamDto))]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<TeamDto>> GetTeam(CancellationToken cancellationToken)
     {
-        await Task.Delay(0, cancellationToken);
+        var team = await teamService.GetUserTeamWithMember(
+            httpContextAccessor.HttpContext.GetUserId(),
+            cancellationToken);
+        
         return Ok(new TeamDto
         {
-            Id = 1,
-            Name = "teamName",
-            InviteToken = "InviteToken",
-            Lead = new UserDto
-            {
-                Id = 1,
-                PhoneNumber = "PhoneNumber",
-                FirstName = "FirstName",
-                SecondName = "SecondName",
-                Surname = "Surname",
-                IsDuty = true,
-                TeamId = 1
-            },
-            Members =
-            [
-                new UserDto
-                {
-                    Id = 2,
-                    PhoneNumber = "PhoneNumber",
-                    FirstName = "FirstName",
-                    SecondName = "SecondName",
-                    Surname = "Surname",
-                    IsDuty = true,
-                    TeamId = 1
-                },
-
-                new UserDto
-                {
-                    Id = 2,
-                    PhoneNumber = "PhoneNumber",
-                    FirstName = "FirstName",
-                    SecondName = "SecondName",
-                    Surname = "Surname",
-                    IsDuty = false,
-                    TeamId = 1
-                }
-            ],
-            LeadRotationRule = LeadRotationRule.LeadIsNotDuty
+            Name = team.Name,
+            InviteToken = team.InviteToken,
+            LeadRotationRule = team.LeadRotationRule,
+            Lead = ToDto(team.Lead),
+            Workers = team.Workers.Select(ToDto).ToList(),
         });
     }
+
+    private static UserDto ToDto(User user)
+        => new() 
+        {
+            Id = user.Id,
+            PhoneNumber = user.PhoneNumber,
+            FirstName = user.FirstName,
+            SecondName = user.SecondName,
+            Surname = user.Surname,
+            IsDuty = user.IsDuty,
+            TeamId = user.TeamId ?? user.LeadTeamId,
+            Role = user.Role,
+            YandexScenarioName = user.YandexScenarioName,
+            YandexOAuthToken = user.YandexOAuthToken,
+            CreatedAt = user.CreatedAt,
+            Email = user.Email
+        };
 }
