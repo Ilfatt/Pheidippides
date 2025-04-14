@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using Pheidippides.Api.Contracts.Common;
 using Pheidippides.Api.Contracts.Schedule;
 using Pheidippides.Domain;
 

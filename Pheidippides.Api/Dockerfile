@@ -8,6 +8,10 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Pheidippides.Api/Pheidippides.Api.csproj", "Pheidippides.Api/"]
+COPY ["Pheidippides.DomainServices/Pheidippides.DomainServices.csproj", "Pheidippides.DomainServices/"]
+COPY ["Pheidippides.Domain/Pheidippides.Domain.csproj", "Pheidippides.Domain/"]
+COPY ["Pheidippides.ExternalServices/Pheidippides.ExternalServices.csproj", "Pheidippides.ExternalServices/"]
+COPY ["Pheidippides.Infrastructure/Pheidippides.Infrastructure.csproj", "Pheidippides.Infrastructure/"]
 RUN dotnet restore "Pheidippides.Api/Pheidippides.Api.csproj"
 COPY . .
 WORKDIR "/src/Pheidippides.Api"
