@@ -14,6 +14,7 @@ public class UserController(UserService service, IHttpContextAccessor httpContex
     [HttpPost("register")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(JwtTokenDto))]
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
+    [SwaggerResponse(StatusCodes.Status403Forbidden)]
     [SwaggerResponse(StatusCodes.Status409Conflict, "Exist user with this phone number")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<JwtTokenDto>> Register(NewUserDto request, CancellationToken cancellationToken)
@@ -61,13 +62,13 @@ public class UserController(UserService service, IHttpContextAccessor httpContex
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<JwtTokenDto>> UpdateYandexIntegration(
-        [FromQuery] string yandexScenarioName, 
+        [FromQuery] string yandexScenarioId, 
         [FromQuery] string yandexOAuthToken, 
         CancellationToken cancellationToken)
     {
         await service.UpdateYandexIntegration(
             httpContextAccessor.HttpContext.GetUserId(),
-            yandexScenarioName,
+            yandexScenarioId,
             yandexOAuthToken,
             cancellationToken);
 
