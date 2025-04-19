@@ -1,13 +1,15 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Pheidippides.Api.Contracts.Auth;
 using Pheidippides.Api.Contracts.User;
+using Pheidippides.Api.Extensions;
 using Pheidippides.DomainServices.Services.User;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Pheidippides.Api.Controllers;
 
 [Route("api/user")]
-public class UserController(UserService service) : Controller
+public class UserController(UserService service, IHttpContextAccessor httpContextAccessor) : Controller
 {
     [HttpPost("register")]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(JwtTokenDto))]
@@ -34,5 +36,41 @@ public class UserController(UserService service) : Controller
         var jwt = await service.Register(command, cancellationToken);
 
         return Ok(new JwtTokenDto { AccessToken = jwt });
+    }
+
+    [HttpPut("update_email")]
+    [Authorize]
+    [SwaggerResponse(StatusCodes.Status204NoContent)]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<JwtTokenDto>> UpdateEmail(
+        [FromQuery] string email,
+        CancellationToken cancellationToken)
+    {
+        await service.UpdateEmail(
+            httpContextAccessor.HttpContext.GetUserId(),
+            email,
+            cancellationToken);
+
+        return NoContent();
+    }
+    
+    [HttpPut("update_yandex_integration")]
+    [Authorize]
+    [SwaggerResponse(StatusCodes.Status204NoContent)]
+    [SwaggerResponse(StatusCodes.Status401Unauthorized)]
+    [SwaggerResponse(StatusCodes.Status500InternalServerError)]
+    public async Task<ActionResult<JwtTokenDto>> UpdateYandexIntegration(
+        [FromQuery] string yandexScenarioName, 
+        [FromQuery] string yandexOAuthToken, 
+        CancellationToken cancellationToken)
+    {
+        await service.UpdateYandexIntegration(
+            httpContextAccessor.HttpContext.GetUserId(),
+            yandexScenarioName,
+            yandexOAuthToken,
+            cancellationToken);
+
+        return NoContent();
     }
 }

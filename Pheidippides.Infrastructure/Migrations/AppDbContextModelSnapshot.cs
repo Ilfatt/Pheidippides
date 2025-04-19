@@ -100,9 +100,15 @@ namespace Pheidippides.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
+                    b.Property<long?>("DutyId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("InviteToken")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<DateTimeOffset?>("LastRotationChange")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<long?>("LeadId")
                         .HasColumnType("bigint");
@@ -113,6 +119,12 @@ namespace Pheidippides.Infrastructure.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("RotationPeriodInDays")
+                        .HasColumnType("integer");
+
+                    b.Property<TimeSpan>("RotationStartTime")
+                        .HasColumnType("interval");
 
                     b.HasKey("Id");
 
@@ -142,9 +154,6 @@ namespace Pheidippides.Infrastructure.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<bool>("IsDuty")
-                        .HasColumnType("boolean");
 
                     b.Property<long>("LeadTeamId")
                         .HasColumnType("bigint");

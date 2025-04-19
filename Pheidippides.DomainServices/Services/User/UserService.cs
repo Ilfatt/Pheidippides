@@ -16,13 +16,13 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
         if (command is { TeamInviteCode: not null, TeamName: not null })
             throw new BadRequestException("TeamInviteCode or TeamName must be null");
         
-        var codeIsValid = await appDbContext.FlashCallCodes.AnyAsync(x =>
-                x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber)
-                && x.Code == command.PhoneActivationCode,
-            cancellationToken);
-
-        if (!codeIsValid)
-            throw new ForbiddenException("Invalid phone activation code");
+        // var codeIsValid = await appDbContext.FlashCallCodes.AnyAsync(x =>
+        //         x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber)
+        //         && x.Code == command.PhoneActivationCode,
+        //     cancellationToken);
+        //
+        // if (!codeIsValid)
+        //     throw new ForbiddenException("Invalid phone activation code");
 
         var userExist = await appDbContext.Users.AnyAsync(
             x => x.PhoneNumber == command.PhoneNumber,
@@ -58,11 +58,38 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
         await appDbContext.SaveChangesAsync(cancellationToken);
 
         var id = await appDbContext.Users
-            .Where(x => x.PhoneNumber == command.PhoneNumber)
+            .Where(x => x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber))
             .Select(x => x.Id)
             .FirstOrDefaultAsync(cancellationToken);
-
+        
         return authService.GenerateJwtToken(id, user.Role);
+    }
+
+    public async Task UpdateEmail(long userId, string email, CancellationToken cancellationToken)
+    {
+        var user = await appDbContext.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+        
+        ArgumentNullException.ThrowIfNull(user);
+        
+        user.Email = email;
+        
+        await appDbContext.SaveChangesAsync(cancellationToken);
+    }
+    
+    public async Task UpdateYandexIntegration(
+        long userId, 
+        string yandexScenarioName, 
+        string yandexOAuthToken, 
+        CancellationToken cancellationToken)
+    {
+        var user = await appDbContext.Users.FirstOrDefaultAsync(x => x.Id == userId, cancellationToken);
+        
+        ArgumentNullException.ThrowIfNull(user);
+        
+        user.YandexScenarioName = yandexScenarioName;
+        user.YandexOAuthToken = yandexOAuthToken;
+        
+        await appDbContext.SaveChangesAsync(cancellationToken);
     }
 
     public async Task ThrowIfUserNotExist(

@@ -1,10 +1,7 @@
-using Pheidippides.Domain;
-
 namespace Pheidippides.Api.Contracts.Schedule;
 
 public class ScheduleDto
 {
-    public required LeadRotationRule LeadRotationRule { get; init; }
     public required List<ScheduleItemDto> ScheduleItems { get; init; }
 }
 

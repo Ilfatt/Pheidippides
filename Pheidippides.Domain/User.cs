@@ -12,7 +12,6 @@ public class User
     public required UserRole Role { get; set; }
     public string? YandexScenarioName { get; set; }
     public string? YandexOAuthToken { get; set; }
-    public bool IsDuty { get; set; }
     public DateTimeOffset CreatedAt { get; private init; } = DateTimeOffset.UtcNow;
     public virtual Team? Team { get; init; }
     public virtual Team? LeadTeam { get; set; }

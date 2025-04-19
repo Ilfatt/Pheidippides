@@ -23,4 +23,18 @@ public class TeamService(AppDbContext appDbContext, UserService userService)
 
         return team ?? throw new InvalidDataException("User team not found"); 
     }
+
+    public async Task SetLeadRotationRule(
+        long leadId, 
+        LeadRotationRule leadRotationRule,
+        CancellationToken cancellationToken)
+    {
+        var team = await appDbContext.Teams.FirstOrDefaultAsync(x => x.LeadId == leadId, cancellationToken);
+        
+        ArgumentNullException.ThrowIfNull(team);
+        
+        team.LeadRotationRule = leadRotationRule;
+        
+        await appDbContext.SaveChangesAsync(cancellationToken);
+    }
 }

@@ -16,11 +16,14 @@ namespace Pheidippides.Infrastructure.Migrations
                 name: "FlashCallCodes",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     PhoneNumber = table.Column<string>(type: "text", nullable: false),
                     Code = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_FlashCallCodes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,6 +45,24 @@ namespace Pheidippides.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "IncidentUser",
+                columns: table => new
+                {
+                    AcknowledgedUsersId = table.Column<long>(type: "bigint", nullable: false),
+                    AcknowledgedUsersIncidentsId = table.Column<long>(type: "bigint", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_IncidentUser", x => new { x.AcknowledgedUsersId, x.AcknowledgedUsersIncidentsId });
+                    table.ForeignKey(
+                        name: "FK_IncidentUser_Incidents_AcknowledgedUsersIncidentsId",
+                        column: x => x.AcknowledgedUsersIncidentsId,
+                        principalTable: "Incidents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Teams",
                 columns: table => new
                 {
@@ -49,7 +70,12 @@ namespace Pheidippides.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     InviteToken = table.Column<string>(type: "text", nullable: false),
-                    LeadId = table.Column<long>(type: "bigint", nullable: false)
+                    LeadRotationRule = table.Column<int>(type: "integer", nullable: false),
+                    RotationPeriodInDays = table.Column<int>(type: "integer", nullable: false),
+                    LastRotationChange = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    RotationStartTime = table.Column<TimeSpan>(type: "interval", nullable: false),
+                    DutyId = table.Column<long>(type: "bigint", nullable: true),
+                    LeadId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -71,32 +97,29 @@ namespace Pheidippides.Infrastructure.Migrations
                     Role = table.Column<int>(type: "integer", nullable: false),
                     YandexScenarioName = table.Column<string>(type: "text", nullable: true),
                     YandexOAuthToken = table.Column<string>(type: "text", nullable: true),
-                    IsDuty = table.Column<bool>(type: "boolean", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    TeamId = table.Column<long>(type: "bigint", nullable: false),
-                    LeadTeamId = table.Column<long>(type: "bigint", nullable: false),
-                    IncidentId = table.Column<long>(type: "bigint", nullable: true)
+                    TeamId = table.Column<long>(type: "bigint", nullable: true),
+                    LeadTeamId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Incidents_IncidentId",
-                        column: x => x.IncidentId,
-                        principalTable: "Incidents",
-                        principalColumn: "Id");
-                    table.ForeignKey(
                         name: "FK_Users_Teams_TeamId",
                         column: x => x.TeamId,
                         principalTable: "Teams",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Incidents_TeamId",
                 table: "Incidents",
                 column: "TeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_IncidentUser_AcknowledgedUsersIncidentsId",
+                table: "IncidentUser",
+                column: "AcknowledgedUsersIncidentsId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_InviteToken",
@@ -111,9 +134,10 @@ namespace Pheidippides.Infrastructure.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_IncidentId",
+                name: "IX_Users_PhoneNumber",
                 table: "Users",
-                column: "IncidentId");
+                column: "PhoneNumber",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Users_TeamId",
@@ -129,21 +153,24 @@ namespace Pheidippides.Infrastructure.Migrations
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
+                name: "FK_IncidentUser_Users_AcknowledgedUsersId",
+                table: "IncidentUser",
+                column: "AcknowledgedUsersId",
+                principalTable: "Users",
+                principalColumn: "Id",
+                onDelete: ReferentialAction.Cascade);
+
+            migrationBuilder.AddForeignKey(
                 name: "FK_Teams_Users_LeadId",
                 table: "Teams",
                 column: "LeadId",
                 principalTable: "Users",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Incidents_Teams_TeamId",
-                table: "Incidents");
-
             migrationBuilder.DropForeignKey(
                 name: "FK_Users_Teams_TeamId",
                 table: "Users");
@@ -152,13 +179,16 @@ namespace Pheidippides.Infrastructure.Migrations
                 name: "FlashCallCodes");
 
             migrationBuilder.DropTable(
+                name: "IncidentUser");
+
+            migrationBuilder.DropTable(
+                name: "Incidents");
+
+            migrationBuilder.DropTable(
                 name: "Teams");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Incidents");
         }
     }
 }

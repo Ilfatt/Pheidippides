@@ -1,8 +1,9 @@
 using Pheidippides.Api.Extensions;
+using Pheidippides.Api.Jobs;
 using Pheidippides.Api.Middlewares;
-using Pheidippides.Domain;
 using Pheidippides.DomainServices.Notifiers;
 using Pheidippides.DomainServices.Services.Auth;
+using Pheidippides.DomainServices.Services.Schedules;
 using Pheidippides.DomainServices.Services.Teams;
 using Pheidippides.DomainServices.Services.User;
 using Pheidippides.ExternalServices;
@@ -20,9 +21,12 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<ZvonokClient>();
 builder.Services.AddSingleton<YandexApiClient>();
 
+builder.Services.AddHostedService<UpdateSchedulesJob>();
+
 builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddScoped<ScheduleService>();
 
 builder.Services.AddSingleton<INotifier, PhoneCallNotifier>();
 builder.Services.AddSingleton<INotifier, YandexHomeStationNotifier>();
@@ -33,7 +37,7 @@ await app.MigrateDbAsync();
 
 app.MapControllers();
 
-app.UseMiddleware<ExceptionHandlingMiddleware>();
+//app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwagger();
