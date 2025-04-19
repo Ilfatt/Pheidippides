@@ -78,7 +78,7 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
     
     public async Task UpdateYandexIntegration(
         long userId, 
-        string yandexScenarioName, 
+        string yandexScenarioId, 
         string yandexOAuthToken, 
         CancellationToken cancellationToken)
     {
@@ -86,7 +86,7 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
         
         ArgumentNullException.ThrowIfNull(user);
         
-        user.YandexScenarioName = yandexScenarioName;
+        user.YandexScenarioName = yandexScenarioId.Split(":")[1];
         user.YandexOAuthToken = yandexOAuthToken;
         
         await appDbContext.SaveChangesAsync(cancellationToken);
