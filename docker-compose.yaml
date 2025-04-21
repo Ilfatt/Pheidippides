@@ -9,6 +9,8 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__PostreSQL=Server=database;Port=5432;Database=pheidippides_db;User Id=dev;Password=111;Include Error Detail=true;
+    depends_on:
+      - database
   database:
     container_name: database
     image: postgres:16.0-alpine3.18
