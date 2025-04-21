@@ -37,7 +37,7 @@ await app.MigrateDbAsync();
 
 app.MapControllers();
 
-//app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwagger();
