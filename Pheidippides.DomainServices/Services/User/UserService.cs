@@ -25,7 +25,7 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
         //     throw new ForbiddenException("Invalid phone activation code");
 
         var userExist = await appDbContext.Users.AnyAsync(
-            x => x.PhoneNumber == command.PhoneNumber,
+            x => x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber),
             cancellationToken);
 
         if (userExist)
@@ -113,7 +113,8 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
         {
             Name = command.TeamName ?? throw new ArgumentNullException(nameof(command)),
             InviteToken = GenerateSecureToken(),
-            Lead = user
+            Lead = user,
+            LeadRotationRule = LeadRotationRule.LeadInRotation
         };
 
     private static Domain.User CreateUser(RegisterCommand command, UserRole userRole)

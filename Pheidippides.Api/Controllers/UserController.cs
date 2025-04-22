@@ -17,7 +17,8 @@ public class UserController(UserService service, IHttpContextAccessor httpContex
     [SwaggerResponse(StatusCodes.Status403Forbidden)]
     [SwaggerResponse(StatusCodes.Status409Conflict, "Exist user with this phone number")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<JwtTokenDto>> Register(NewUserDto request, CancellationToken cancellationToken)
+    public async Task<ActionResult<JwtTokenDto>> Register(
+        [FromBody] NewUserDto request, CancellationToken cancellationToken)
     {
         if (request.PhoneActivationCode > 9999)
             return BadRequest("The phone activation code must consist of 4 digits");

@@ -76,7 +76,7 @@ public class ScheduleService(AppDbContext appDbContext)
 
         var order = team.Workers.Select(x => x).ToList();
 
-        if (team.LeadRotationRule == LeadRotationRule.LeadInRotation)
+        if (team.LeadRotationRule == LeadRotationRule.LeadInRotation || team.Workers.Count == 0)
         {
             order = order.Append(team.Lead).ToList();
         }
