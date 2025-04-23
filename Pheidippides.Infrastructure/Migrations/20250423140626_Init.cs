@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -34,10 +35,12 @@ namespace Pheidippides.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    IsClosed = table.Column<bool>(type: "boolean", nullable: false),
-                    IsCritical = table.Column<bool>(type: "boolean", nullable: false),
+                    Level = table.Column<int>(type: "integer", nullable: false),
                     TeamId = table.Column<long>(type: "bigint", nullable: false),
-                    LastNotifiedMoment = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false)
+                    LastNotifiedMoment = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
+                    ClosedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    AdditionallyNeedAcknowledgedUsers = table.Column<List<long>>(type: "bigint[]", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,6 +73,7 @@ namespace Pheidippides.Infrastructure.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "text", nullable: false),
                     InviteToken = table.Column<string>(type: "text", nullable: false),
+                    IncidentCreateToken = table.Column<string>(type: "text", nullable: false),
                     LeadRotationRule = table.Column<int>(type: "integer", nullable: false),
                     RotationPeriodInDays = table.Column<int>(type: "integer", nullable: false),
                     LastRotationChange = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),

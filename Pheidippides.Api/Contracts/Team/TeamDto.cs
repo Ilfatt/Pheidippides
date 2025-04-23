@@ -11,4 +11,5 @@ public class TeamDto
     public required LeadRotationRule LeadRotationRule { get; init; }
     public required UserDto Lead { get; init; }
     public required List<UserDto> Workers { get; init; }
+    public required string IncidentCreateToken { get; set; }
 }

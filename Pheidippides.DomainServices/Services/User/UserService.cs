@@ -114,7 +114,8 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
             Name = command.TeamName ?? throw new ArgumentNullException(nameof(command)),
             InviteToken = GenerateSecureToken(),
             Lead = user,
-            LeadRotationRule = LeadRotationRule.LeadInRotation
+            LeadRotationRule = LeadRotationRule.LeadInRotation,
+            IncidentCreateToken = GenerateSecureToken()
         };
 
     private static Domain.User CreateUser(RegisterCommand command, UserRole userRole)

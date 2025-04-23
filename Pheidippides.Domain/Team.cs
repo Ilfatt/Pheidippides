@@ -5,6 +5,7 @@ public class Team
     public long Id { get; private init; }
     public required string Name { get; set; }
     public required string InviteToken { get; set; }
+    public required string IncidentCreateToken { get; set; }
     public LeadRotationRule LeadRotationRule { get; set; }
     public virtual required User Lead { get; init; }
     public ushort RotationPeriodInDays { get; set; } = 3;

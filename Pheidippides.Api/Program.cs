@@ -3,6 +3,7 @@ using Pheidippides.Api.Jobs;
 using Pheidippides.Api.Middlewares;
 using Pheidippides.DomainServices.Notifiers;
 using Pheidippides.DomainServices.Services.Auth;
+using Pheidippides.DomainServices.Services.Incidents;
 using Pheidippides.DomainServices.Services.Schedules;
 using Pheidippides.DomainServices.Services.Teams;
 using Pheidippides.DomainServices.Services.User;
@@ -27,6 +28,7 @@ builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<UserService>();
 builder.Services.AddScoped<ScheduleService>();
+builder.Services.AddScoped<IncidentService>();
 
 builder.Services.AddSingleton<INotifier, PhoneCallNotifier>();
 builder.Services.AddSingleton<INotifier, YandexHomeStationNotifier>();

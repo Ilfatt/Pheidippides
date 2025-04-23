@@ -33,6 +33,7 @@ public class TeamController(
             LeadRotationRule = team.LeadRotationRule,
             Lead = ToDto(team.Lead, team),
             Workers = team.Workers.Select(x => ToDto(x, team)).ToList(),
+            IncidentCreateToken = team.IncidentCreateToken,
         });
     }
 
