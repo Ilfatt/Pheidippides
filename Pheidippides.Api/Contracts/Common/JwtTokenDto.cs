@@ -1,4 +1,4 @@
-namespace Pheidippides.Api.Contracts.Auth;
+namespace Pheidippides.Api.Contracts.Common;
 
 public class JwtTokenDto
 {

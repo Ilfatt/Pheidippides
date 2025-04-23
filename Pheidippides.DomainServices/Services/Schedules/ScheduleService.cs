@@ -66,6 +66,19 @@ public class ScheduleService(AppDbContext appDbContext)
             })
             .ToList();
 
+        if (items.DistinctBy(x => x.UserId).Count() == 1)
+        {
+            items =
+            [
+                new ScheduleItem
+                {
+                    From = items.Min(x => x.From),
+                    To = items.Max(x => x.From),
+                    UserId = items.First().UserId
+                }
+            ];
+        }
+
         return new Schedule { ScheduleItems = items };
     }
 

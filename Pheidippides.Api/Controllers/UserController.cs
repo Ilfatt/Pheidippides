@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Pheidippides.Api.Contracts.Auth;
+using Pheidippides.Api.Contracts.Common;
 using Pheidippides.Api.Contracts.User;
 using Pheidippides.Api.Extensions;
 using Pheidippides.DomainServices.Services.User;
@@ -40,39 +40,36 @@ public class UserController(UserService service, IHttpContextAccessor httpContex
         return Ok(new JwtTokenDto { AccessToken = jwt });
     }
 
-    [HttpPut("update_email")]
+    [HttpPut("update_profile_info")]
     [Authorize]
     [SwaggerResponse(StatusCodes.Status204NoContent)]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult<JwtTokenDto>> UpdateEmail(
-        [FromQuery] string email,
+        [FromBody] UpdateProfileInfoDto request,
         CancellationToken cancellationToken)
     {
         await service.UpdateEmail(
             httpContextAccessor.HttpContext.GetUserId(),
-            email,
+            request.Email,
+            cancellationToken);
+
+        await service.UpdateYandexIntegration(
+            httpContextAccessor.HttpContext.GetUserId(),
+            request.YandexScenarioId,
+            request.YandexOAuthToken,
             cancellationToken);
 
         return NoContent();
     }
-    
-    [HttpPut("update_yandex_integration")]
+
+    [HttpGet("get_current_user")]
     [Authorize]
-    [SwaggerResponse(StatusCodes.Status204NoContent)]
+    [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(CurrentUserDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult<JwtTokenDto>> UpdateYandexIntegration(
-        [FromQuery] string yandexScenarioId, 
-        [FromQuery] string yandexOAuthToken, 
-        CancellationToken cancellationToken)
+    public ActionResult<CurrentUserDto> GetCurrentUser(CancellationToken cancellationToken)
     {
-        await service.UpdateYandexIntegration(
-            httpContextAccessor.HttpContext.GetUserId(),
-            yandexScenarioId,
-            yandexOAuthToken,
-            cancellationToken);
-
-        return NoContent();
+        return Ok(new CurrentUserDto() { CurrentUserId = httpContextAccessor.HttpContext.GetUserId() });
     }
 }

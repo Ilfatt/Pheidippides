@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Pheidippides.Api.Contracts.Auth;
+using Pheidippides.Api.Contracts.Common;
 using Pheidippides.DomainServices.Services.Auth;
 using Swashbuckle.AspNetCore.Annotations;
 
@@ -13,7 +14,9 @@ public class AuthController(AuthService service) : Controller
     [SwaggerResponse(StatusCodes.Status400BadRequest)]
     [SwaggerResponse(StatusCodes.Status409Conflict, "Exist user with this phone number")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
-    public async Task<ActionResult> SendCode(SendActivationCodeDto request, CancellationToken cancellationToken)
+    public async Task<ActionResult> SendCode(
+        [FromBody] SendActivationCodeDto request,
+        CancellationToken cancellationToken)
     {
         await service.SendCode(request.PhoneNumber, cancellationToken);
 
