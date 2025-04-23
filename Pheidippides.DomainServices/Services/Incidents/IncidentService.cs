@@ -49,8 +49,6 @@ public class IncidentService(AppDbContext appDbContext)
         incident.AcknowledgedUsers.Add(user);
 
         await appDbContext.SaveChangesAsync(cancellationToken);
-
-        throw new BadRequestException("The user was not called");
     }
 
     public async Task<Incident[]> GetHistory(long userId, CancellationToken cancellationToken)
