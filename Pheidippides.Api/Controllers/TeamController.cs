@@ -38,7 +38,7 @@ public class TeamController(
     }
 
     [HttpPut("set_lead_rotation_rule")]
-    [Authorize(Roles = nameof(UserRole.Lead))]
+    [Authorize]
     [SwaggerOperation(Summary = "0 = LeadIsNotDuty, 1 = LeadIsDuty, 2 = LeadInRotation")]
     [SwaggerResponse(StatusCodes.Status204NoContent)]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
