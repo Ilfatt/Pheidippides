@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Pheidippides.Domain;
 using Pheidippides.Domain.Exceptions;
+using Pheidippides.DomainServices.Notifiers;
 using Pheidippides.Infrastructure;
 
 namespace Pheidippides.DomainServices.Services.Incidents;
 
-public class IncidentService(AppDbContext appDbContext)
+public class IncidentService(AppDbContext appDbContext, IEnumerable<INotifier> notifiers)
 {
     public async Task CreateIncident(CreateNewIncidentCommand command, CancellationToken cancellationToken)
     {
@@ -34,7 +35,7 @@ public class IncidentService(AppDbContext appDbContext)
                            .Include(x => x.Team)
                            .ThenInclude(x => x.Workers)
                            .Include(x => x.Team)
-                           .ThenInclude(x => x.LeadId)
+                           .ThenInclude(x => x.Lead)
                            .FirstOrDefaultAsync(x => x.Id == incidentId, cancellationToken)
                        ?? throw new NotFoundException($"Incident with Id = {incidentId} not found");
 
@@ -65,5 +66,43 @@ public class IncidentService(AppDbContext appDbContext)
             .ToArrayAsync(cancellationToken);
 
         return incidents;
+    }
+
+    public async Task NotifyAboutIncidents(CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            var incidents = await appDbContext.Incidents.AsNoTracking()
+                .Include(x => x.AcknowledgedUsers)
+                .Include(x => x.Team)
+                .ThenInclude(x => x.Lead)
+                .ThenInclude(x => x.Team)
+                .OrderBy(x => x.Id)
+                .Where(x => x.LastNotifiedMoment.AddSeconds(60) < DateTime.UtcNow && x.Level == 1
+                            || x.LastNotifiedMoment == DateTimeOffset.MinValue && x.Level > 1)
+                .Where(x =>
+                    !x.AcknowledgedUsers.Select(user => user.Id).Contains(x.Team.DutyId!.Value)
+                    || (!x.AcknowledgedUsers.Select(user => user.Id).Contains(x.Team.LeadId!.Value) && x.Team.LeadRotationRule == LeadRotationRule.LeadInRotation)
+                    || !x.AdditionallyNeedAcknowledgedUsers.All(id => x.AcknowledgedUsers.Select(user => user.Id).Contains(id)))
+                .Take(100)
+                .ToListAsync(cancellationToken);
+
+
+            foreach (var incident in incidents)
+            {
+                var needAcknowledgedUsers = incident.AdditionallyNeedAcknowledgedUsers;
+                needAcknowledgedUsers.Add(incident.Team.DutyId!.Value);
+
+                if (incident.Team.LeadRotationRule == LeadRotationRule.LeadIsDuty)
+                {
+                    needAcknowledgedUsers.Add(incident.Team.LeadId!.Value);
+                }
+                
+                needAcknowledgedUsers = needAcknowledgedUsers
+                    .Except(incident.AcknowledgedUsers.Select(x => x.Id))
+                    .ToList();
+                
+            }   
+        }
     }
 }
