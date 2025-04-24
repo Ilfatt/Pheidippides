@@ -48,7 +48,7 @@ public class IncidentController(IncidentService service, IHttpContextAccessor co
         return NoContent();
     }
 
-    [HttpPut("get_history")]
+    [HttpGet("get_history")]
     [Authorize]
     [SwaggerResponse(StatusCodes.Status200OK, "OK", typeof(IncidentDto))]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
