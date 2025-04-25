@@ -7,7 +7,7 @@ namespace Pheidippides.ExternalServices;
 
 public class SmtpClient(IConfiguration configuration)
 {
-    private async Task SendMessage(string subject, string body, string emailTo)
+    public async Task SendMessage(string subject, string body, string emailTo, CancellationToken cancellationToken)
     {
         var from = new MailAddress(configuration["EmailConfig:Sender"]!,
             configuration["EmailConfig:SenderName"]!);
@@ -30,6 +30,6 @@ public class SmtpClient(IConfiguration configuration)
             UseDefaultCredentials = false,
         };
 
-        await smtp.SendMailAsync(message);
+        await smtp.SendMailAsync(message, cancellationToken);
     }
 }

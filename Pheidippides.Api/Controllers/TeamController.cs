@@ -42,7 +42,7 @@ public class TeamController(
     [SwaggerOperation(Summary = "0 = LeadIsNotDuty, 1 = LeadIsDuty, 2 = LeadInRotation")]
     [SwaggerResponse(StatusCodes.Status204NoContent)]
     [SwaggerResponse(StatusCodes.Status401Unauthorized)]
-    [SwaggerResponse(StatusCodes.Status403Forbidden, "LeadRotationRule cannot chage worker.")]
+    [SwaggerResponse(StatusCodes.Status403Forbidden, "LeadRotationRule cannot change worker.")]
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> SetLeadRotationRule(
         [FromQuery] LeadRotationRule leadRotationRule,

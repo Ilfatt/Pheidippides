@@ -72,13 +72,13 @@ public class IncidentService(AppDbContext appDbContext, IEnumerable<INotifier> n
     {
         while (!cancellationToken.IsCancellationRequested)
         {
-            var incidents = await appDbContext.Incidents.AsNoTracking()
+            var incidents = await appDbContext.Incidents
                 .Include(x => x.AcknowledgedUsers)
                 .Include(x => x.Team)
                 .ThenInclude(x => x.Lead)
                 .ThenInclude(x => x.Team)
                 .OrderBy(x => x.Id)
-                .Where(x => x.LastNotifiedMoment.AddSeconds(60) < DateTime.UtcNow && x.Level == 1
+                .Where(x => x.LastNotifiedMoment.AddSeconds(65) < DateTime.UtcNow && x.Level == 1
                             || x.LastNotifiedMoment == DateTimeOffset.MinValue && x.Level > 1)
                 .Where(x =>
                     !x.AcknowledgedUsers.Select(user => user.Id).Contains(x.Team.DutyId!.Value)
@@ -87,9 +87,12 @@ public class IncidentService(AppDbContext appDbContext, IEnumerable<INotifier> n
                 .Take(100)
                 .ToListAsync(cancellationToken);
 
+            if(incidents.Count == 0) return;
 
             foreach (var incident in incidents)
             {
+                incident.LastNotifiedMoment = DateTimeOffset.UtcNow;
+                
                 var needAcknowledgedUsers = incident.AdditionallyNeedAcknowledgedUsers;
                 needAcknowledgedUsers.Add(incident.Team.DutyId!.Value);
 
@@ -101,8 +104,31 @@ public class IncidentService(AppDbContext appDbContext, IEnumerable<INotifier> n
                 needAcknowledgedUsers = needAcknowledgedUsers
                     .Except(incident.AcknowledgedUsers.Select(x => x.Id))
                     .ToList();
+
+                var users = await appDbContext.Users.AsNoTracking()
+                    .Where(x => needAcknowledgedUsers.Contains(x.Id))
+                    .ToArrayAsync(cancellationToken);
                 
-            }   
+                if (incident.Level == 1)
+                {
+                    await notifiers
+                        .Single(x => x.NotifierType == NotifierType.YandexHomeStation)
+                        .Notify(incident, users.Where(x => x is { YandexOAuthToken: not null, YandexScenarioName: not null }).ToArray(), cancellationToken);
+                    
+                    await notifiers
+                        .Single(x => x.NotifierType == NotifierType.Phone)
+                        .Notify(incident, users.Where(x => x is { YandexOAuthToken: null, YandexScenarioName: null }).ToArray(), cancellationToken);
+                }
+                else if (incident.Level == 2)
+                {
+                    await notifiers
+                        .Single(x => x.NotifierType == NotifierType.Email)
+                        .Notify(incident, users, cancellationToken);
+                }
+                else throw new NotImplementedException();
+            }
+
+            await appDbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

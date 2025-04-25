@@ -86,7 +86,7 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
         
         ArgumentNullException.ThrowIfNull(user);
         
-        user.YandexScenarioName = yandexScenarioId.Split(":")[1];
+        user.YandexScenarioName = yandexScenarioId?.Split(":")[1];
         user.YandexOAuthToken = yandexOAuthToken;
         
         await appDbContext.SaveChangesAsync(cancellationToken);

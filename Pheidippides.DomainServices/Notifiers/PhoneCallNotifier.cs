@@ -1,13 +1,20 @@
 using Pheidippides.Domain;
+using Pheidippides.DomainServices.Extensions;
+using Pheidippides.ExternalServices;
 
 namespace Pheidippides.DomainServices.Notifiers;
 
-public class PhoneCallNotifier : INotifier
+public class PhoneCallNotifier(ZvonokClient zvonokClient) : INotifier
 {
     public NotifierType NotifierType => NotifierType.Phone;
 
-    public Task Notify(Incident incident, User[] users, CancellationToken cancellationToken)
+    public async Task Notify(Incident incident, User[] users, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        await users.IndependentParallelForEachAsync(
+            async (x, token) =>
+            {
+                await zvonokClient.AlertCall(x.PhoneNumber, "Алерт! " + incident.Title, token);
+            },
+            cancellationToken);
     }
 }

@@ -7,7 +7,7 @@ public class Incident
     public required string Description { get; init; } = null!;
     public required ushort Level { get; init; }
     public required long TeamId { get; init; }
-    public DateTimeOffset LastNotifiedMoment { get; init; } = DateTimeOffset.MinValue;
+    public DateTimeOffset LastNotifiedMoment { get; set; } = DateTimeOffset.MinValue;
     public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
     public DateTimeOffset? ClosedAt { get; init; }
     public List<long> AdditionallyNeedAcknowledgedUsers { get; init; } = [];

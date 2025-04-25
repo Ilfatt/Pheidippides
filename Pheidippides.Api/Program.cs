@@ -21,8 +21,10 @@ builder.Services.AddControllers();
 
 builder.Services.AddSingleton<ZvonokClient>();
 builder.Services.AddSingleton<YandexApiClient>();
+builder.Services.AddSingleton<SmtpClient>();
 
 builder.Services.AddHostedService<UpdateSchedulesJob>();
+builder.Services.AddHostedService<NotifyJob>();
 
 builder.Services.AddScoped<TeamService>();
 builder.Services.AddScoped<AuthService>();
@@ -32,6 +34,7 @@ builder.Services.AddScoped<IncidentService>();
 
 builder.Services.AddSingleton<INotifier, PhoneCallNotifier>();
 builder.Services.AddSingleton<INotifier, YandexHomeStationNotifier>();
+builder.Services.AddSingleton<INotifier, EmailNotifier>();
 
 var app = builder.Build();
 

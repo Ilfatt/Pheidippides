@@ -13,7 +13,7 @@ using Pheidippides.Infrastructure;
 namespace Pheidippides.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250423140626_Init")]
+    [Migration("20250425061740_Init")]
     partial class Init
     {
         /// <inheritdoc />

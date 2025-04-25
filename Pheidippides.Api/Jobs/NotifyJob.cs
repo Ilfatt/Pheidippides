@@ -1,27 +1,27 @@
-using Pheidippides.DomainServices.Services.Schedules;
+using Pheidippides.DomainServices.Services.Incidents;
 
 namespace Pheidippides.Api.Jobs;
 
-public class UpdateSchedulesJob(IServiceProvider serviceProvider, ILogger<UpdateSchedulesJob> logger) : BackgroundService 
+public class NotifyJob(IServiceProvider serviceProvider, ILogger<NotifyJob> logger) : BackgroundService
 {
     protected override  async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         await Task.Yield();
      
         await using var scope = serviceProvider.CreateAsyncScope();
-        var scheduleService = scope.ServiceProvider.GetRequiredService<ScheduleService>();
+        var incidentService = scope.ServiceProvider.GetRequiredService<IncidentService>();
         
         while (stoppingToken.IsCancellationRequested == false)
         {
-            await Task.Delay(10 * 1000, stoppingToken);
+            await Task.Delay(2 * 1000, stoppingToken);
 
             try
             {
-                await scheduleService.UpdateSchedules(stoppingToken);
+                await incidentService.NotifyAboutIncidents(stoppingToken);
             }
             catch (Exception e)
             {
-                logger.LogError(e, "Failed to update schedules");
+                logger.LogError(e, "Failed notify about incidents");
             }
         }
         // ReSharper disable once FunctionNeverReturns
