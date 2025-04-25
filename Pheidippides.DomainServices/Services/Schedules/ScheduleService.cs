@@ -21,6 +21,13 @@ public class ScheduleService(AppDbContext appDbContext)
                 .OrderBy(x => 1)
                 .Take(1000)
                 .ToListAsync(cancellationToken);
+            
+            teams.AddRange(await appDbContext.Teams
+                .Include(x => x.Lead)
+                .Include(x => x.Workers)
+                .Where(x => x.LeadId == x.DutyId && x.LeadRotationRule != LeadRotationRule.LeadInRotation)
+                .Where(x => x.Workers.Any())
+                .ToListAsync(cancellationToken));
 
             if (teams.Count == 0)
                 return;
@@ -59,7 +66,7 @@ public class ScheduleService(AppDbContext appDbContext)
 
                 return new ScheduleItem
                 {
-                    From = point,
+                    From = point.AddDays(-1),
                     To = point.AddDays(team.RotationPeriodInDays),
                     UserId = order.Current,
                 };

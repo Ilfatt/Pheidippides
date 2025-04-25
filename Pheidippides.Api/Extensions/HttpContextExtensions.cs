@@ -43,9 +43,9 @@ public static class HttpContextExtensions
             throw new ArgumentException("User not authenticated");
 
         var claim = httpContext.User.Claims
-                        .First(claim => claim.Type == ClaimTypes.Role)
+                        .First(claim => claim.Type == nameof(ClaimTypes.Role))
                     ?? throw new ArgumentException($"Authenticated user has not claim" +
-                                                   $" with type '{ClaimTypes.Role}'");
+                                                   $" with type '{nameof(ClaimTypes.Role)}'");
 
         return (UserRole)int.Parse(claim.Value, CultureInfo.InvariantCulture);
     }

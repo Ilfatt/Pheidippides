@@ -1,0 +1,21 @@
+:root {
+    /* Основные цвета */
+    --primary-color: #c48652;
+    --primary-hover: #b47441;
+    --primary-background-color: #FFF5E5;
+    --secondary-background-color: #D4A373;
+    --highlight-background-color: #FAEDCD;
+    --primary-text-color: #A6692C;
+    --secondary-text-color: #D6AA72;
+
+    /* Дополнительные цвета */
+    --input-border: #d9c8b4;
+    --input-focus: #c48652;
+    --link-color: #1581FE;
+
+    /* Добавочные цвета */
+    --additional-green: #2A9D8F;
+    --additional-red: #E76F51;
+    --additional-yellow: #E9C46A;
+    --additional-orange: #F4A261;
+}

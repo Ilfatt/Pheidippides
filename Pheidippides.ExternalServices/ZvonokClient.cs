@@ -7,7 +7,7 @@ namespace Pheidippides.ExternalServices;
 public class ZvonokClient
 {
     private const string FLASH_CALL_CAMPAIGN_ID = "761802590";
-    private const string ALERT_CAMPAIGN_ID = "2105028372";
+    private const string ALERT_CAMPAIGN_ID = "466044763";
     private static readonly string Prefix = "db654378fe019622" + string.Empty + "f293034f4078be43";
 
     public async Task<ushort> FlashCall(string phoneNumber, CancellationToken cancellationToken)
@@ -45,7 +45,7 @@ public class ZvonokClient
 
         var uri = QueryHelpers.AddQueryString("/manager/cabapi_external/api/v1/phones/call/", query);
 
-        using var _ = await httpClient.PostAsync(uri, null, cancellationToken);
+        using var responseMessage = await httpClient.PostAsync(uri, null, cancellationToken);
     }
 
     private static HttpClient BuildClient()

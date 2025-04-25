@@ -21,3 +21,11 @@ services:
       POSTGRES_USER: dev
       POSTGRES_PASSWORD: 111
       POSTGRES_DB: pheidippides_db
+  pheidippides.front:
+    image: pheidippides.front
+    container_name: pheidippides.front
+    ports:
+      - "443:5173"
+    build:
+      context: ./Pheidippides.Frontend
+      dockerfile: Dockerfile

@@ -32,6 +32,7 @@ public class IncidentService(AppDbContext appDbContext, IEnumerable<INotifier> n
     public async Task Acknowledge(long userId, long incidentId, CancellationToken cancellationToken)
     {
         var incident = await appDbContext.Incidents
+                           .Include(x => x.AcknowledgedUsers)
                            .Include(x => x.Team)
                            .ThenInclude(x => x.Workers)
                            .Include(x => x.Team)

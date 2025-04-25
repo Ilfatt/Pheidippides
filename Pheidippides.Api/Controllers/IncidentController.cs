@@ -43,7 +43,7 @@ public class IncidentController(IncidentService service, IHttpContextAccessor co
     [SwaggerResponse(StatusCodes.Status500InternalServerError)]
     public async Task<ActionResult> Acknowledge([FromQuery] long incidentId, CancellationToken cancellationToken)
     {
-        await service.Acknowledge(incidentId, contextAccessor.HttpContext.GetUserId(), cancellationToken);
+        await service.Acknowledge(contextAccessor.HttpContext.GetUserId(), incidentId, cancellationToken);
 
         return NoContent();
     }
