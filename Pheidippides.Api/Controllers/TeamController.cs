@@ -67,7 +67,7 @@ public class TeamController(
             FirstName = user.FirstName,
             SecondName = user.SecondName,
             Surname = user.Surname,
-            IsDuty = team.DutyId == user.Id,
+            IsDuty = team.DutyId == user.Id || team.LeadRotationRule == LeadRotationRule.LeadIsDuty && user.Id == team.LeadId,
             TeamId = user.TeamId ?? user.LeadTeamId,
             Role = user.Role,
             YandexScenarioId = user.YandexScenarioName,
