@@ -9,7 +9,6 @@ public class Incident
     public required long TeamId { get; init; }
     public DateTimeOffset LastNotifiedMoment { get; set; } = DateTimeOffset.MinValue;
     public DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
-    public DateTimeOffset? ClosedAt { get; init; }
     public List<long> AdditionallyNeedAcknowledgedUsers { get; init; } = [];
     public virtual Team Team { get; init; } = null!;
     public virtual List<User> AcknowledgedUsers { get; init; } = null!;

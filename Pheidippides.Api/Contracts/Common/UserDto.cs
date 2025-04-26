@@ -11,7 +11,7 @@ public class UserDto
     public required UserRole Role { get; init; }
     public required string Surname { get; init; }
     
-    public required string? YandexScenarioName { get; init; }
+    public required string? YandexScenarioId { get; init; }
     public required string? YandexOAuthToken { get; init; }
     public required DateTimeOffset CreatedAt { get; init; }
     public required string? Email { get; init; }

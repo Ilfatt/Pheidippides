@@ -29,7 +29,7 @@ public class ZvonokClient
 
         return Convert.ToUInt16(content!.Data.Pincode, CultureInfo.InvariantCulture);
     }
-    
+
     public async Task AlertCall(string phoneNumber, string text, CancellationToken cancellationToken)
     {
         using var httpClient = BuildClient();
@@ -57,17 +57,18 @@ public class ZvonokClient
         return httpClient;
     }
 }
+
 file class ApiResponse
 {
-    public string Status { get; init; }
-    public ResponseData Data { get; init; }
+    public string Status { get; init; } = null!;
+    public ResponseData Data { get; init; } = null!;
 }
 
 file class ResponseData
 {
-    public string Balance { get; init; }
+    public string Balance { get; init; } = null!;
     public long CallId { get; init; }
     public DateTime Created { get; init; }
-    public string Phone { get; init; }
-    public string Pincode { get; init; }
+    public string Phone { get; init; } = null!;
+    public string Pincode { get; init; } = null!;
 }

@@ -13,7 +13,9 @@ public class YandexHomeStationNotifier(YandexApiClient yandexApi) : INotifier
         await users.IndependentParallelForEachAsync(
             async (x, token) =>
             {
-                await yandexApi.ExecuteScenario(x.YandexScenarioName!, x.YandexOAuthToken!, token);
+                var scenarioId = x.YandexScenarioName!.Split(":")[1];
+                
+                await yandexApi.ExecuteScenario(scenarioId, x.YandexOAuthToken!, token);
             },
             cancellationToken);
     }

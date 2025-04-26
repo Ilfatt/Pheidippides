@@ -70,7 +70,7 @@ public class TeamController(
             IsDuty = team.DutyId == user.Id,
             TeamId = user.TeamId ?? user.LeadTeamId,
             Role = user.Role,
-            YandexScenarioName = user.YandexScenarioName,
+            YandexScenarioId = user.YandexScenarioName,
             YandexOAuthToken = user.YandexOAuthToken,
             CreatedAt = user.CreatedAt,
             Email = user.Email

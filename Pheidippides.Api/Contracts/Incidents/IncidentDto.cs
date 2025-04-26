@@ -7,6 +7,5 @@ public class IncidentDto
     public required string Description { get; init; } = null!;
     public required ushort Level { get; init; }
     public required DateTimeOffset CreatedAt { get; init; } = DateTimeOffset.UtcNow;
-    public required DateTimeOffset? ClosedAt { get; init; }
     public required bool NeedAcknowledgeCurrentUser { get; init; }
 }

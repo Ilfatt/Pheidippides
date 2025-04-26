@@ -66,7 +66,6 @@ public class IncidentController(IncidentService service, IHttpContextAccessor co
                 Description = x.Description,
                 Level = x.Level,
                 CreatedAt = x.CreatedAt,
-                ClosedAt = x.ClosedAt,
                 NeedAcknowledgeCurrentUser =
                     (x.AdditionallyNeedAcknowledgedUsers.Contains(userId)
                     || x.Team.DutyId == userId
