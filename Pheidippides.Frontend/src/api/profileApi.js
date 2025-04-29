@@ -31,16 +31,14 @@ export const getUserInfo = async () => {
         ...(teamStore.teamData?.workers || [])
     ];
 
-    console.log(allMembers)
-
     const currentUser = allMembers.find(member => member?.id === userData.currentUserId);
 
     return currentUser || null;
 }
 
-export async function incidentAcknowledge(id) {
+export async function updateProfileInfo(profileData) {
     try {
-        const response = await API.put(`/incident/acknowledge?incidentId=${id}`, null, {
+        const response = await API.put(`/user/update_profile_info`, profileData, {
             headers: {
                 'accept': 'text/plain',
                 'Authorization': `Bearer ${localStorage.getItem('token')}`

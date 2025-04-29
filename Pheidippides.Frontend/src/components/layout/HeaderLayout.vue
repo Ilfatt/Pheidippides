@@ -27,13 +27,20 @@
       </router-link>
       <router-link
           class="nav-menu__link"
+          to="/team"
+          active-class="active"
+      >
+        Команда
+      </router-link>
+      <router-link
+          class="nav-menu__link"
           to="/profile"
           active-class="active"
       >
         Профиль
       </router-link>
       <button
-          class="nav-menu__logout"
+          class="nav-menu__link"
           @click="logout">
         Выйти
       </button>

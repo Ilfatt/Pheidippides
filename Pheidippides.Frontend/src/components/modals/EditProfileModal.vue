@@ -2,73 +2,142 @@
   <div class="modal-overlay" @click.self="close">
     <div class="modal">
       <h2>Редактировать профиль</h2>
+
       <div class="modal__field">
         <label>Телефон (не редактируется)</label>
         <input type="text" :value="model.phoneNumber" disabled />
       </div>
+
       <div class="modal__field">
         <label>Email</label>
-        <input type="email" v-model="model.email" />
+        <input
+          v-model="model.email"
+          type="email"
+          placeholder="Введите почту"
+        />
       </div>
+
       <div class="modal__field">
-        <label>Yandex ID</label>
-        <div id="yandex-login-button"></div>
-        <p v-if="model.yandexOAuthToken">{{ model.yandexOAuthToken }}</p>
+        <div class="field__label">
+          <label>Yandex ID</label>
+          <button
+            v-if="!model.yandexOAuthToken"
+            class="label__ya-code"
+            @click="openYandexOAuth"
+          >
+            получить код
+          </button>
+          <p
+            class="label__ya-status"
+            v-if="model.yandexOAuthToken"
+          >
+            ✔ Привязано
+          </p>
+        </div>
+
+        <input
+          v-if="!model.yandexOAuthToken"
+          v-model="confirmationCode"
+          type="text"
+          placeholder="Вставьте код подтверждения"
+        />
+        <p
+          v-if="errorCode && !model.yandexOAuthToken"
+          class="error">
+          Неверный код
+        </p>
+        <button
+          v-if="confirmationCode && !model.yandexOAuthToken"
+          @click="exchangeCodeForToken"
+        >
+          Подтвердить
+        </button>
+      </div>
+
+      <div
+        v-if="model.yandexOAuthToken"
+        class="modal__field"
+      >
+        <label>ID сценария</label>
+
+        <input
+          v-model="model.yandexScenarioId"
+          type="text"
+          placeholder="Вставьте id сценария"
+        />
       </div>
 
       <div class="modal__actions">
-        <button @click="save">Сохранить</button>
-        <button @click="close">Отмена</button>
+        <button @click="saveConnectionData">Сохранить</button>
+        <button @click="emit('close')">Отмена</button>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import {onMounted, reactive, watch} from 'vue'
+import { ref, onMounted, reactive } from 'vue'
+import axios from 'axios'
+import {updateProfileInfo} from "@/api/profileApi.js";
 
-const props = defineProps({
-  data: Object,
-})
+const props = defineProps({ data: Object })
 const emit = defineEmits(['close', 'save'])
 
-const model = reactive(JSON.parse(JSON.stringify(props.data))) // глубокая копия
+const model = reactive(JSON.parse(JSON.stringify(props.data)))
 
-const close = () => emit('close')
-const save = () => emit('save', model)
+const showCodeInput = ref(false)
+const confirmationCode = ref('')
+const errorCode = ref(false)
 
-watch(model, (newValue) => {
-  console.log(newValue)
-})
+const clientId = 'f319c975f0254125a1e81e97e0fe421f'
 
-onMounted(() => {
-  const script = document.createElement('script');
+const openYandexOAuth = () => {
+  const url = `https://oauth.yandex.ru/authorize?response_type=code&client_id=${clientId}`
+  window.open(url, '_blank')
+  showCodeInput.value = true
+}
 
-  window.YaAuthSuggest.init({
-      client_id: 'f319c975f0254125a1e81e97e0fe421f',
-      response_type: 'token',
-      // redirect_uri: window.location.origin,
-    },
-    window.location.origin, {
-      view: 'button',
-      parentId: 'yandex-login-button',
-      buttonView: 'main',
-      buttonTheme: 'light',
-      buttonSize: 'm',
-      buttonBorderRadius: 0
-    })
-    .then(result => result.handler())
-    .then(data => {
-      alert(data)
-      console.log('access_token:', data.access_token);
-      model.yandexOAuthToken = data.access_token;
-    })
-    .catch(error => {
-      console.error('Ошибка при получении токена:', error);
-    });
+const exchangeCodeForToken = async () => {
+  try {
+    const response = await axios.post(
+      'https://oauth.yandex.ru/token',
+      new URLSearchParams({
+        grant_type: 'authorization_code',
+        code: confirmationCode.value,
+        client_id: clientId,
+        client_secret: '300bf868a96043a7ab97b93662aa8716',
+      }),
+      {
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }
+    )
 
-  document.head.appendChild(script);
-});
+    const { access_token } = response.data
+    model.yandexOAuthToken = access_token
+  } catch (err) {
+    console.error('Ошибка при обмене кода на токен:', err);
+    errorCode.value = true;
+  }
+}
+
+const saveConnectionData = async () => {
+  const profileDataToSend = {
+    email: model?.email,
+    yandexScenarioId: model?.yandexScenarioId,
+    yandexOAuthToken: model?.yandexOAuthToken,
+  }
+
+  try {
+    await updateProfileInfo(profileDataToSend);
+
+    emit('save');
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 </script>
 
 <style scoped>
@@ -98,5 +167,34 @@ onMounted(() => {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
+}
+
+.field__label {
+  display: flex;
+  gap: 5px;
+  align-items: baseline;
+}
+
+.label__ya-code {
+  font-size: 12px;
+
+  color: var(--link-color);
+}
+
+.label__ya-status {
+  color: var(--additional-green);
+}
+
+input {
+  padding: 5px 10px;
+
+  border-radius: 10px;
+  border: 1px solid lightgray;
+}
+
+.error {
+  font-size: 12px;
+
+  color: var(--additional-red);
 }
 </style>

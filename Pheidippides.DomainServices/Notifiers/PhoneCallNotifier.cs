@@ -1,10 +1,11 @@
+using Microsoft.Extensions.Logging;
 using Pheidippides.Domain;
 using Pheidippides.DomainServices.Extensions;
 using Pheidippides.ExternalServices;
 
 namespace Pheidippides.DomainServices.Notifiers;
 
-public class PhoneCallNotifier(ZvonokClient zvonokClient) : INotifier
+public class PhoneCallNotifier(ZvonokClient zvonokClient, ILogger<PhoneCallNotifier> logger) : INotifier
 {
     public NotifierType NotifierType => NotifierType.Phone;
 
@@ -15,6 +16,7 @@ public class PhoneCallNotifier(ZvonokClient zvonokClient) : INotifier
             {
                 await zvonokClient.AlertCall(x.PhoneNumber, "Алерт! " + incident.Title, token);
             },
+            logger,
             cancellationToken);
     }
 }

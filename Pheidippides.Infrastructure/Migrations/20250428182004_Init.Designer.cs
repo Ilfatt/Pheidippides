@@ -13,7 +13,7 @@ using Pheidippides.Infrastructure;
 namespace Pheidippides.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250425061740_Init")]
+    [Migration("20250428182004_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -72,9 +72,6 @@ namespace Pheidippides.Infrastructure.Migrations
                     b.PrimitiveCollection<List<long>>("AdditionallyNeedAcknowledgedUsers")
                         .IsRequired()
                         .HasColumnType("bigint[]");
-
-                    b.Property<DateTimeOffset?>("ClosedAt")
-                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");

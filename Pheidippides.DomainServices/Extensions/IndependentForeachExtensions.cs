@@ -1,4 +1,5 @@
 using System.Collections.Concurrent;
+using Microsoft.Extensions.Logging;
 
 namespace Pheidippides.DomainServices.Extensions;
 
@@ -7,6 +8,7 @@ public static class IndependentForeachExtensions
     public static async Task IndependentParallelForEachAsync<T>(
         this IEnumerable<T> enumerable,
         Func<T, CancellationToken, Task> action,
+        ILogger logger,
         CancellationToken cancellationToken)
     {
         var exceptions = new ConcurrentBag<Exception>();
@@ -31,6 +33,6 @@ public static class IndependentForeachExtensions
             });
 
         if (!exceptions.IsEmpty)
-            throw new AggregateException(exceptions);
+            logger.LogError(new AggregateException(exceptions), "Parallel action failed");
     }
 }

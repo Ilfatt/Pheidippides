@@ -1,79 +1,115 @@
 <template>
   <AuthLayout
     auth-title="Регистрация"
-    auth-description="Вы хотите создать или вступить в команду?"
+    auth-description="Введите номер телефона для начала регистрации"
   >
-    <div class="auth-switcher">
+    <div v-if="step === 1">
+      <input
+        class="auth-input"
+        v-model="userData.phoneNumber"
+        type="text"
+        placeholder="номер телефона"
+      />
       <button
-          :class="{ active: method === 'create' }"
-          @click="method = 'create'"
+        class="auth-button"
+        @click="requestCode"
       >
-        Создать
+        Продолжить
       </button>
-      <button
-          :class="{ active: method === 'join' }"
-          @click="method = 'join'"
-      >
-        Вступить
-      </button>
+      <div>
+        Уже есть аккаунт?
+        <router-link
+          class="auth-link"
+          to="/login"
+        >
+          Авторизоваться
+        </router-link>
+      </div>
     </div>
 
-    <input
+    <div v-else>
+      <div class="auth-switcher">
+        <button
+          :class="{ active: method === 'create' }"
+          @click="method = 'create'"
+        >
+          Создать
+        </button>
+        <button
+          :class="{ active: method === 'join' }"
+          @click="method = 'join'"
+        >
+          Вступить
+        </button>
+      </div>
+
+      <input
         v-if="method === 'create'"
         class="auth-input"
         v-model="userData.teamName"
         type="text"
         placeholder="название команды"
-    />
-    <input
+      />
+      <input
         v-else
         class="auth-input"
         v-model="userData.teamInviteCode"
         type="text"
         placeholder="код команды"
-    />
+      />
 
-    <input
+      <input
         class="auth-input"
-        v-model="userData.userName"
+        v-model="userData.surname"
         type="text"
-        placeholder="имя пользователя"
-    />
-    <input
+        placeholder="фамилия"
+      />
+      <input
         class="auth-input"
-        v-model="userData.phoneNumber"
+        v-model="userData.firstName"
         type="text"
-        placeholder="номер телефона"
-    />
-    <input
-      class="auth-input"
-      v-model="userData.phoneActivationCode"
-      type="text"
-      placeholder="код подверждения"
-    />
-    <input
+        placeholder="имя"
+      />
+      <input
+        class="auth-input"
+        v-model="userData.secondName"
+        type="text"
+        placeholder="отчество"
+      />
+
+      <input
+        class="auth-input"
+        v-model="userData.phoneActivationCode"
+        type="text"
+        placeholder="код подтверждения"
+      />
+      <input
         class="auth-input"
         v-model="userData.password"
         type="password"
         placeholder="пароль"
-    />
-    <p class="auth-error">
-      {{ errorMassage }}
-    </p>
-    <button
+      />
+
+      <p class="auth-error">
+        {{ errorMassage }}
+      </p>
+
+      <button
         class="auth-button"
         @click="registerUser"
-    >
-      Зарегестрироваться
-    </button>
-    <div>
-      Уже есть аккаунт?
-      <router-link
+      >
+        Зарегистрироваться
+      </button>
+
+      <div>
+        Уже есть аккаунт?
+        <router-link
           class="auth-link"
           to="/login"
-      >
-        Авторизоваться
-      </router-link>
+        >
+          Авторизоваться
+        </router-link>
+      </div>
     </div>
   </AuthLayout>
 </template>
@@ -82,29 +118,41 @@
 import AuthLayout from '@/components/layout/AuthLayout.vue';
 
 import { ref } from 'vue';
-import { useRouter } from 'vue-router'
+import { useRouter } from 'vue-router';
 
 import { useAuthStore } from '@/stores/authStore.js';
 
 const userData = ref({
   teamName: null,
   teamInviteCode: null,
-  userName: null,
+  firstName: null,
+  secondName: null,
+  surname: null,
   phoneNumber: null,
   phoneActivationCode: null,
   password: null,
 });
 
+const step = ref(1);
 const method = ref('create');
 const router = useRouter();
 const auth = useAuthStore();
 const errorMassage = ref('');
 
+const requestCode = async () => {
+  try {
+    await auth.requestCode(userData.value.phoneNumber);
+    step.value = 2;
+  } catch (e) {
+    errorMassage.value = e;
+  }
+}
+
 const registerUser = async () => {
   const dataToSend = {
-    FirstName: userData.value.userName,
-    SecondName: userData.value.userName,
-    Surname: userData.value.userName,
+    FirstName: userData.value.firstName,
+    SecondName: userData.value.secondName,
+    Surname: userData.value.surname,
     PhoneNumber: userData.value.phoneNumber,
     PhoneActivationCode: userData.value.phoneActivationCode,
     Password: userData.value.password,
@@ -125,6 +173,7 @@ const registerUser = async () => {
   }
 }
 </script>
+
 
 <style scoped>
 .auth-switcher {

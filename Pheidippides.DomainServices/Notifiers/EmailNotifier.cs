@@ -1,11 +1,12 @@
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 using Pheidippides.Domain;
 using Pheidippides.DomainServices.Extensions;
 using Pheidippides.ExternalServices;
 
 namespace Pheidippides.DomainServices.Notifiers;
 
-public class EmailNotifier(SmtpClient smtpClient) : INotifier
+public class EmailNotifier(SmtpClient smtpClient, ILogger<EmailNotifier> logger) : INotifier
 {
     public NotifierType NotifierType => NotifierType.Email;
 
@@ -21,6 +22,7 @@ public class EmailNotifier(SmtpClient smtpClient) : INotifier
                     x.Email,
                     token);
             },
+            logger,
             cancellationToken);
     }
 

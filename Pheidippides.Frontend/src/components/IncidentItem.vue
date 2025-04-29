@@ -9,11 +9,6 @@
       <div class="incident-item__incident-info-right">
         <div class="incident-info-right__time">
           <p>открыт: {{ convertDate(incidentData.createdAt) }}</p>
-          <p
-            v-if="incidentData.cloasedAt"
-          >
-            закрыт: {{ convertDate(incidentData.createdAt) }}
-          </p>
         </div>
 
         <div
@@ -29,7 +24,7 @@
       v-if="incidentData.needAcknowledgeCurrentUser"
       @click="getIncidentAcknowledge()"
     >
-      Акнуть)
+      Акнуть
     </button>
   </div>
 </template>
@@ -46,7 +41,7 @@ const props = defineProps({
 const emit = defineEmits(["updateIncidentAcknowledge"]);
 
 const getLevelType = () => {
-  return props.incidentData.level === 1 ? 'critical' : 'normal';
+  return props.incidentData.level === 1 ? 'high' : 'low';
 };
 
 const convertDate = (dateStr) => {
@@ -124,12 +119,12 @@ const getIncidentAcknowledge = async () => {
   border-radius: 10px;
 }
 
-.incident-info-right__level--critical {
+.incident-info-right__level--high {
   color: var(--additional-red);
   border: 1px solid var(--additional-red);
 }
 
-.incident-info-right__level--normal {
+.incident-info-right__level--low {
   color: var(--additional-yellow);
   border: 1px solid var(--additional-yellow);
 }

@@ -4,6 +4,7 @@ import RegisterView from '@/views/RegisterView.vue';
 import ScheduleView from '@/views/ScheduleView.vue';
 import IncidentView from '@/views/IncidentView.vue';
 import ProfileView from '@/views/ProfileView.vue';
+import TeamView from '@/views/TeamView.vue';
 
 const routes = [
   { path: '/', redirect: '/login' },
@@ -12,6 +13,7 @@ const routes = [
   { path: '/schedule', component: ScheduleView },
   { path: '/incident', component: IncidentView },
   { path: '/profile', component: ProfileView },
+  { path: '/team', component: TeamView },
 ];
 
 const router = createRouter({

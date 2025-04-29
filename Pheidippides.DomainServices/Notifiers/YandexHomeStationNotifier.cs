@@ -1,10 +1,11 @@
+using Microsoft.Extensions.Logging;
 using Pheidippides.Domain;
 using Pheidippides.DomainServices.Extensions;
 using Pheidippides.ExternalServices;
 
 namespace Pheidippides.DomainServices.Notifiers;
 
-public class YandexHomeStationNotifier(YandexApiClient yandexApi) : INotifier
+public class YandexHomeStationNotifier(YandexApiClient yandexApi, ILogger<YandexHomeStationNotifier> logger) : INotifier
 {
     public NotifierType NotifierType => NotifierType.YandexHomeStation;
 
@@ -17,6 +18,7 @@ public class YandexHomeStationNotifier(YandexApiClient yandexApi) : INotifier
                 
                 await yandexApi.ExecuteScenario(scenarioId, x.YandexOAuthToken!, token);
             },
+            logger,
             cancellationToken);
     }
 }

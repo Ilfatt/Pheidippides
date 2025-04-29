@@ -1,11 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using Pheidippides.Domain;
+using Pheidippides.DomainServices.Services.Schedules;
 using Pheidippides.DomainServices.Services.User;
 using Pheidippides.Infrastructure;
 
 namespace Pheidippides.DomainServices.Services.Teams;
 
-public class TeamService(AppDbContext appDbContext, UserService userService)
+public class TeamService(AppDbContext appDbContext, UserService userService, ScheduleService scheduleService)
 {
     public async Task<Team> GetUserTeamWithMember(long userId, CancellationToken cancellationToken)
     {
@@ -36,5 +37,6 @@ public class TeamService(AppDbContext appDbContext, UserService userService)
         team.LeadRotationRule = leadRotationRule;
         
         await appDbContext.SaveChangesAsync(cancellationToken);
+        await scheduleService.UpdateSchedules(cancellationToken);
     }
 }

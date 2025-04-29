@@ -8,57 +8,32 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fbdac987-687d-41da-8e87-c9eb85e17d08" name="Changes" comment="add notifyers">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/Pheidippides.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jsLibraryMappings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/.vscode/extensions.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/Dockerfile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/index.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/jsconfig.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/package.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/public/pheidippides_icon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/App.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/api/authApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/api/incidentApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/api/profileApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/api/scheduleApi.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/img/authBackground.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/img/editIcon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/img/leadIcon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/img/mainBackground.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/img/pheidippidesIcon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/img/stuffIcon.svg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/styles/base.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/styles/colors.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/IncidentItem.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/layout/AuthLayout.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/layout/HeaderLayout.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/modals/EditProfileModal.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/ui/AuthInput.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/main.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/router/index.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/stores/authStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/stores/teamStore.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/IncidentView.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/LoginView.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/ProfileView.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/RegisterView.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/ScheduleView.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/vite.config.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pheidippides.Api/Controllers/IncidentController.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Api/Controllers/IncidentController.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pheidippides.Api/Extensions/HttpContextExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Api/Extensions/HttpContextExtensions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/Incidents/IncidentService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/Incidents/IncidentService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/Schedules/ScheduleService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/Schedules/ScheduleService.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Pheidippides.ExternalServices/ZvonokClient.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.ExternalServices/ZvonokClient.cs" afterDir="false" />
+    <list default="true" id="fbdac987-687d-41da-8e87-c9eb85e17d08" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/assets/img/copyIcon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/UserInfoItem.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/TeamView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.Pheidippides/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.Pheidippides/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Extensions/IndependentForeachExtensions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Extensions/IndependentForeachExtensions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Notifiers/EmailNotifier.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Notifiers/EmailNotifier.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Notifiers/PhoneCallNotifier.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Notifiers/PhoneCallNotifier.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Notifiers/YandexHomeStationNotifier.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Notifiers/YandexHomeStationNotifier.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/Teams/TeamService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/Teams/TeamService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/User/UserService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/User/UserService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/api/profileApi.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/api/profileApi.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/IncidentItem.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/IncidentItem.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/layout/HeaderLayout.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/layout/HeaderLayout.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/modals/EditProfileModal.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/components/modals/EditProfileModal.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/stores/teamStore.js" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/stores/teamStore.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/ProfileView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/ProfileView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/RegisterView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/RegisterView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/ScheduleView.vue" beforeDir="false" afterPath="$PROJECT_DIR$/Pheidippides.Frontend/src/views/ScheduleView.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Infrastructure/Migrations/20250425061740_Init.Designer.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Infrastructure/Migrations/20250425061740_Init.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Pheidippides.Infrastructure/Migrations/AppDbContextModelSnapshot.cs" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -96,7 +71,7 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4b3bd2351c5f46d38a432f9a6e59749eea00/06/40c170c1/IHostedService.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/4f1fdec7cbfe4433a7ec3a6d1bd0e54222600/99/56e5fc9e/ServiceLifetime.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a04b665a7c2468daaa73ccb41c0f2a6c9600/b7/a565fb84/Controller.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5bdc6c2c5ceb43f89df9f40d1008911974200/37/9eb80d29/MailMessage.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5bdc6c2c5ceb43f89df9f40d1008911974200/37/9eb80d29/MailMessage.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/6b624d224d2a4bea8365e291e734b6bd15c00/e9/eafccd63/ClaimTypes.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/7e62198beab24380bbac29171862d1d8adf10/90/0d01fe57/JsonSerializerInternalReader.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/9ff6fe24f5944b35a381217736eded33290038/38/d1493c52/EntityFrameworkQueryableExtensions.cs" root0="FORCE_HIGHLIGHTING" />
@@ -125,16 +100,12 @@
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/c7afd9724cf757c4a8469dba2bdc22ab5ac111c91f431dbfefc992dacb3e8635/ControllerBase.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/ce37be1a06b16c6faa02038d2cc477dd3bca5b217ceeb41c5f2ad45c1bf9/ServiceProvider.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/e6808c1f6b90fb96d176b426f1733aa0a98dde526fbefc7633f50228cc2e31b/Parallel.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/ilfat_salavatullin/RiderProjects/Pheidippides/Pheidippides.Api/Controllers/TeamController.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/Pheidippides.Api/Contracts/Incidents/IncidentDto.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Pheidippides.Api/Program.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Pheidippides.Api/obj/Debug/net9.0/.NETCoreApp,Version=v9.0.AssemblyAttributes.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Pheidippides.Domain/Team.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/ilfat_salavatullin/RiderProjects/Pheidippides/Pheidippides.DomainServices/Notifiers/INotifier.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/ilfat_salavatullin/RiderProjects/Pheidippides/Pheidippides.DomainServices/Notifiers/PhoneCallNotifier.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Users/ilfat_salavatullin/RiderProjects/Pheidippides/Pheidippides.DomainServices/Notifiers/YandexHomeStationNotifier.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Pheidippides.DomainServices/Services/User/RegisterCommand.cs" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Pheidippides.DomainServices/Services/User/UserService.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="mock:///Users/ilfat_salavatullin/RiderProjects/Pheidippides/Pheidippides.ExternalServices/ZvonokClient.cs" root0="SKIP_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/Pheidippides.Frontend/package-lock.json" root0="SKIP_HIGHLIGHTING" />
   </component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -153,22 +124,22 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Launch Settings Profile.Pheidippides: http.executor": "Debug",
-    "Docker.docker-compose.yaml.database: Compose Deployment.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "#1 on dev",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "vcs.Git",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Launch Settings Profile.Pheidippides: http.executor&quot;: &quot;Debug&quot;,
+    &quot;Docker.docker-compose.yaml.database: Compose Deployment.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;#1 on dev&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;vcs.Git&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected=".NET Launch Settings Profile.Pheidippides: http">
     <configuration name="Pheidippides: http" type="LaunchSettings" factoryName=".NET Launch Settings Profile">
       <option name="LAUNCH_PROFILE_PROJECT_FILE_PATH" value="$PROJECT_DIR$/Pheidippides.Api/Pheidippides.Api.csproj" />
@@ -286,7 +257,10 @@
       <workItem from="1745482210918" duration="3473000" />
       <workItem from="1745506030295" duration="1601000" />
       <workItem from="1745512939963" duration="917000" />
-      <workItem from="1745521805597" duration="18212000" />
+      <workItem from="1745521805597" duration="19102000" />
+      <workItem from="1745586207235" duration="3982000" />
+      <workItem from="1745681525179" duration="1831000" />
+      <workItem from="1745864015680" duration="5751000" />
     </task>
     <task id="LOCAL-00001" summary="add gitignore">
       <option name="closed" value="true" />
@@ -448,7 +422,39 @@
       <option name="project" value="LOCAL" />
       <updated>1745565686260</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="add notifyers">
+      <option name="closed" value="true" />
+      <created>1745578543091</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1745578543091</updated>
+    </task>
+    <task id="LOCAL-00022" summary="add notifyers">
+      <option name="closed" value="true" />
+      <created>1745578548920</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1745578548920</updated>
+    </task>
+    <task id="LOCAL-00023" summary="add notifyers">
+      <option name="closed" value="true" />
+      <created>1745682114368</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1745682114368</updated>
+    </task>
+    <task id="LOCAL-00024" summary="add notifyers">
+      <option name="closed" value="true" />
+      <created>1745682752584</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1745682752584</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -507,19 +513,6 @@
             </endOffsets>
           </properties>
           <option name="timeStamp" value="3" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Pheidippides.DomainServices/Services/Incidents/IncidentService.cs</url>
-          <line>45</line>
-          <properties documentPath="$PROJECT_DIR$/Pheidippides.DomainServices/Services/Incidents/IncidentService.cs" containingFunctionPresentation="Method 'Acknowledge'">
-            <startOffsets>
-              <option value="2001" />
-            </startOffsets>
-            <endOffsets>
-              <option value="2227" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="25" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

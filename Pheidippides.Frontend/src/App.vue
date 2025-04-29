@@ -12,10 +12,10 @@ import '@/assets/styles/colors.css'
 
 <style scoped>
 .content-wrapper {
-  height: 100vh;
-  width: 100vw;
+  min-height: 100vh;
+  width: 100%;
 
   background: url('@/assets/img/mainBackground.jpg') no-repeat center center fixed;
-  background-size: cover;
+  background-size: 100% 100%;
 }
 </style>

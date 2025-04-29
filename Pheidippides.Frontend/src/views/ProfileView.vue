@@ -5,7 +5,7 @@
       <div class="profile__content">
         <div class="content__user-info">
           <div class="user-info__name-wrapper">
-            <p class="user-info__name">{{ userData.firstName }}</p>
+            <p class="user-info__name">{{ formattedFullName }}</p>
             <p class="user-info__id">#{{ userData.id }}</p>
           </div>
           <div
@@ -42,6 +42,13 @@
             <span class="connection-item__label">YandexID: </span>
             <span class="connection-item__data">connected</span>
           </div>
+          <div
+            v-if="userData.yandexScenarioName"
+            class="content__connection-item"
+          >
+            <span class="connection-item__label">Сценарий: </span>
+            <span class="connection-item__data">{{ userData.yandexScenarioName }}</span>
+          </div>
         </div>
       </div>
 
@@ -68,40 +75,42 @@
 import HeaderLayout from '@/components/layout/HeaderLayout.vue';
 import EditProfileModal from '@/components/modals/EditProfileModal.vue';
 
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 
 import { getUserInfo } from '@/api/profileApi.js';
-import {useTeamStore} from "@/stores/teamStore.js";
+
+import { useTeamStore } from "@/stores/teamStore.js";
 
 const showEditModal = ref(false);
 const userData = ref({});
 
-const connectionData = ref({
-  phone: { label: 'Телефон', data: '89872525226' },
-  email: { label: 'Email', data: null },
-  yandexID: { label: 'YandexID', data: null },
-});
-
-const saveEdit = (updatedData) => {
-  connectionData.value = updatedData
-  showEditModal.value = false
+const saveEdit = async () => {
+  await getUserData();
+  showEditModal.value = false;
 };
 
 const getUserData = async () => {
   try {
+    await teamStore.fetchTeamData();
     userData.value = await getUserInfo();
   } catch (error) {
     console.error(error);
   }
 };
 
+const formattedFullName = computed(() => {
+  if (!userData.value || !userData.value.surname) return '';
+
+  const firstInitial = userData.value.firstName ? userData.value.firstName[0] + '.' : '';
+  const secondInitial = userData.value.secondName ? userData.value.secondName[0] + '.' : '';
+
+  return `${userData.value.surname} ${firstInitial} ${secondInitial}`;
+});
+
 const teamStore = useTeamStore();
 
 onMounted(async () => {
   await getUserData();
-
-  teamStore.fetchTeamData();
-  console.log(userData.value);
 });
 </script>
 
@@ -182,5 +191,11 @@ onMounted(async () => {
 
 .content__connection-item-wrapper {
   padding-top: 30px;
+}
+
+.content__connection-item {
+  display: flex;
+  justify-content: start;
+  gap: 5px;
 }
 </style>

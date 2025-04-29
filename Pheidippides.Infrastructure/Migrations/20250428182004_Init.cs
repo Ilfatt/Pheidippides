@@ -39,7 +39,6 @@ namespace Pheidippides.Infrastructure.Migrations
                     TeamId = table.Column<long>(type: "bigint", nullable: false),
                     LastNotifiedMoment = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: false),
-                    ClosedAt = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
                     AdditionallyNeedAcknowledgedUsers = table.Column<List<long>>(type: "bigint[]", nullable: false)
                 },
                 constraints: table =>

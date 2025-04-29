@@ -16,13 +16,13 @@ public class UserService(AppDbContext appDbContext, AuthService authService)
         if (command is { TeamInviteCode: not null, TeamName: not null })
             throw new BadRequestException("TeamInviteCode or TeamName must be null");
         
-        // var codeIsValid = await appDbContext.FlashCallCodes.AnyAsync(x =>
-        //         x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber)
-        //         && x.Code == command.PhoneActivationCode,
-        //     cancellationToken);
-        //
-        // if (!codeIsValid)
-        //     throw new ForbiddenException("Invalid phone activation code");
+        var codeIsValid = await appDbContext.FlashCallCodes.AnyAsync(x =>
+                x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber)
+                && x.Code == command.PhoneActivationCode,
+            cancellationToken);
+        
+        if (!codeIsValid)
+            throw new ForbiddenException("Invalid phone activation code");
 
         var userExist = await appDbContext.Users.AnyAsync(
             x => x.PhoneNumber == PhoneNumberUnifier.Standardize(command.PhoneNumber),
