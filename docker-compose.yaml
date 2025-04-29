@@ -1,0 +1,33 @@
+services:
+  pheidippides.api:
+    image: pheidippides.api
+    build:
+      context: .
+      dockerfile: Pheidippides.Api/Dockerfile
+    ports:
+      - "5282:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__PostreSQL=Server=database;Port=5432;Database=pheidippides_db;User Id=dev;Password=111;Include Error Detail=true;
+    depends_on:
+      - pheidippides.front
+  database:
+    container_name: database
+    image: postgres:16.0-alpine3.18
+    restart: always
+    ports:
+      - "3003:5432"
+    environment:
+      POSTGRES_USER: dev
+      POSTGRES_PASSWORD: 111
+      POSTGRES_DB: pheidippides_db
+  pheidippides.front:
+    image: pheidippides.front
+    container_name: pheidippides.front
+    ports:
+      - "443:5173"
+    build:
+      context: ./Pheidippides.Frontend
+      dockerfile: Dockerfile
+    depends_on:
+      - database
